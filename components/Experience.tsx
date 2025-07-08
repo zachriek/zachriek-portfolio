@@ -53,7 +53,7 @@ const Experience = () => {
 										</div>
 										<div className="expText flex gap-5 relative z-20">
 											<div className="timeline-logo">
-												<img src={card.logoPath} alt="logo" />
+												<img src={card.logoPath} alt="logo" className="rounded-full" />
 											</div>
 											<div>
 												<h1 className="font-semibold text-2xl md:text-3xl mb-2">{card.title}</h1>
