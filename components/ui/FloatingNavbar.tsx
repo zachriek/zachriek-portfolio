@@ -78,7 +78,7 @@ export const FloatingNav = ({
 				>
 					<div className="flex justify-between items-center gap-x-20">
 						<div>
-							<span className="text-white font-semibold text-lg">zachriek |</span>
+							<span className="text-white font-semibold text-lg">zachriek </span> <span className="font-mono">{`</>`}</span>
 						</div>
 
 						<div className="hidden md:flex items-center space-x-4">
