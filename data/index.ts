@@ -130,7 +130,7 @@ export const socialMedia = [
 
 export const expCards = [
 	{
-		logoPath: '/images/logo1.png',
+		logoPath: '/images/logo-gradien.jpeg',
 		title: 'UKM-U Gerakan Digital Ekosistem Nusantara',
 		sub: 'Member – Project Division',
 		date: 'December 2024 - Present | University of Lampung',
@@ -141,7 +141,7 @@ export const expCards = [
 		],
 	},
 	{
-		logoPath: '/images/logo2.png',
+		logoPath: '/images/logo-core.jpeg',
 		title: 'Project-Based Internship: Core Initiative Frontend x Rakamin Academy',
 		sub: 'Core Initiative Studio',
 		date: 'January 2024 - February 2024',
@@ -152,7 +152,7 @@ export const expCards = [
 		],
 	},
 	{
-		logoPath: '/images/logo3.png',
+		logoPath: '/images/logo-qwords.jpg',
 		title: 'Project-Based Internship: Qwords Fullstack Developer x Rakamin Academy',
 		sub: 'Qwords Cloud Web Hosting Indonesia',
 		date: 'November 2023 - December 2023',
@@ -166,13 +166,13 @@ export const expCards = [
 
 export const eduCards = [
 	{
-		logoPath: '/images/logo1.png',
+		logoPath: '/images/logo-unila.png',
 		title: 'University of Lampung',
 		sub: "Bachelor's degree, Informatics Engineering",
 		date: 'August 2023 - Present',
 	},
 	{
-		logoPath: '/images/logo2.png',
+		logoPath: '/images/logo-smkn1.png',
 		title: 'SMK Negeri 1 Bandar Lampung',
 		sub: 'Multimedia',
 		date: 'July 2020 - July 2023',
