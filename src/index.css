@@ -67,18 +67,8 @@ a:hover {
   cursor: url('/cursor-hover-small.png'), pointer;
 }
 
-a:active,
-a:active * {
-  color: #FAFAFA !important;
-}
-
 button:hover {
   cursor: url('/cursor-hover-small.png'), pointer;
-}
-
-button:active,
-button:active * {
-  color: #FAFAFA !important;
 }
 
 /* Pixel Art Utilities */
@@ -92,11 +82,6 @@ button:active * {
   transform: translate(-2px, -2px);
   box-shadow: 6px 6px 0px rgba(0, 0, 0, 0.3);
   cursor: url('/cursor-hover-small.png'), pointer;
-}
-
-.pixel-border:active,
-.pixel-border:active * {
-  color: #FAFAFA !important;
 }
 
 .pixel-text-accent {
