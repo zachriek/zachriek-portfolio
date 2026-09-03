@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, FileText, Code, Blocks, Users } from 'lucide-react';
 import './SispanduDetail.css';
 
 const dummySchools = [
@@ -34,24 +34,28 @@ const SispanduDetail = ({ onBack }) => {
             className={`tab-btn pixel-btn ${activeTab === 'deskripsi' ? 'active' : ''}`}
             onClick={() => setActiveTab('deskripsi')}
           >
+            <FileText size={18} />
             Deskripsi
           </button>
           <button
             className={`tab-btn pixel-btn ${activeTab === 'teknologi' ? 'active' : ''}`}
             onClick={() => setActiveTab('teknologi')}
           >
+            <Code size={18} />
             Teknologi
           </button>
           <button
             className={`tab-btn pixel-btn ${activeTab === 'fitur' ? 'active' : ''}`}
             onClick={() => setActiveTab('fitur')}
           >
+            <Blocks size={18} />
             Modul & Fitur
           </button>
           <button
             className={`tab-btn pixel-btn ${activeTab === 'klien' ? 'active' : ''}`}
             onClick={() => setActiveTab('klien')}
           >
+            <Users size={18} />
             Klien
           </button>
         </div>

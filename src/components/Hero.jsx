@@ -1,4 +1,5 @@
 import React from 'react';
+import { Github } from 'lucide-react';
 import './Hero.css';
 
 const Hero = () => {
@@ -17,6 +18,7 @@ const Hero = () => {
         
         <div className="social-links">
           <a href="https://github.com/zachriek" target="_blank" rel="noreferrer" className="pixel-btn">
+            <Github size={20} />
             GitHub
           </a>
         </div>

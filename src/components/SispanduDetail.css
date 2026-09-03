@@ -173,6 +173,10 @@
   border: 2px solid var(--border-color);
   cursor: url('/cursor-hover-small.png'), pointer;
   transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  justify-content: center;
 }
 
 .tab-btn:hover {
