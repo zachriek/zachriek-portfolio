@@ -27,7 +27,7 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  -webkit-tap-highlight-color: var(--accent-color);
+  -webkit-tap-highlight-color: color-mix(in srgb, var(--accent-color) 40%, transparent);
 }
 
 body {
