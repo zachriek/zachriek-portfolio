@@ -1,0 +1,331 @@
+/* Audio Player Widget */
+.audio-player-container {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: var(--nav-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 320px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  color: var(--text-main);
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease;
+  overflow: hidden;
+  font-family: var(--font-pixel);
+}
+
+.audio-player-container:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+}
+
+.player-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.player-title {
+  font-size: 14px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+}
+
+/* Modal Open Button */
+.track-select-btn {
+  width: 100%;
+  background: var(--bg-card);
+  color: inherit;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 13px;
+  text-align: left;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: url('/cursor-hover-small.png'), pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.track-select-btn:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--accent-color);
+}
+
+/* Controls */
+.controls-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.play-btn {
+  background: var(--accent-color);
+  color: #FAFAFA;
+  border: none;
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: url('/cursor-hover-small.png'), pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 15px rgba(155, 28, 33, 0.3);
+  flex-shrink: 0;
+}
+
+.play-btn:hover {
+  transform: scale(1.1);
+  background: #7a1519;
+}
+
+.play-btn:active {
+  transform: scale(0.95);
+}
+
+.volume-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+}
+
+.volume-slider {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(to right, var(--accent-color) var(--volume-progress, 50%), var(--border-color) var(--volume-progress, 50%));
+  border-radius: 2px;
+  outline: none;
+  cursor: url('/cursor-hover-small.png'), pointer;
+  position: relative;
+  transition: transform 0.2s;
+}
+
+.volume-slider:hover {
+  transform: scaleY(1.5);
+}
+
+.volume-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--text-main);
+  cursor: url('/cursor-hover-small.png'), pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  opacity: 0; /* Hide thumb by default, show on hover like modern players */
+}
+
+.volume-slider:hover::-webkit-slider-thumb {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+/* Minimize button */
+.minimize-btn, .expand-btn, .modal-close {
+  background: transparent;
+  border: none;
+  color: inherit;
+  cursor: url('/cursor-hover-small.png'), pointer;
+  padding: 4px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s ease;
+}
+
+.expand-btn {
+  padding: 8px;
+  border-radius: 50%;
+}
+
+.minimize-btn:hover, .expand-btn:hover, .modal-close:hover {
+  background: var(--bg-card-hover);
+}
+
+.audio-player-minimized {
+  width: auto;
+  padding: 12px;
+  border-radius: 50px;
+}
+
+.audio-player-minimized .player-header,
+.audio-player-minimized .track-select-btn {
+  display: none;
+}
+
+.audio-player-minimized .controls-row {
+  gap: 8px;
+}
+
+
+/* Modal Overlay */
+.track-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  animation: fadeIn 0.3s forwards;
+}
+
+@keyframes fadeIn {
+  to { opacity: 1; }
+}
+
+.track-modal {
+  background: var(--nav-bg);
+  color: var(--text-main);
+  width: 90%;
+  max-width: 450px;
+  max-height: 80vh;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--border-color);
+  overflow: hidden;
+  transform: translateY(20px);
+  animation: slideUp 0.3s forwards cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  font-family: var(--font-pixel);
+}
+
+@keyframes slideUp {
+  to { transform: translateY(0); }
+}
+
+.track-modal-header {
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.track-modal-header h2 {
+  font-size: 18px;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.track-list {
+  padding: 12px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Track Card */
+.track-card {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  border-radius: 8px;
+  background: transparent;
+  border: 1px solid transparent;
+  cursor: url('/cursor-hover-small.png'), pointer;
+  transition: all 0.2s ease;
+  color: inherit;
+  width: 100%;
+  text-align: left;
+  font-family: var(--font-pixel);
+}
+
+.track-card:hover {
+  background: var(--bg-card-hover);
+}
+
+.track-card.active {
+  background: rgba(155, 28, 33, 0.1);
+  border-color: var(--accent-color);
+  color: var(--accent-color);
+}
+
+.track-card-icon {
+  margin-right: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  opacity: 0.5;
+}
+
+.track-card.active .track-card-icon {
+  opacity: 1;
+}
+
+.track-card-info {
+  flex: 1;
+}
+
+.track-card-title {
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0;
+}
+
+/* Global Visualizer */
+.visualizer-global-container {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100vw;
+  height: 120px; /* Made slightly taller to fade out nicer */
+  pointer-events: none;
+  z-index: 500;
+  opacity: 0.5; /* Made softer */
+}
+
+.visualizer-canvas {
+  width: 100%;
+  height: 100%;
+}
+
+@media (max-width: 768px) {
+  .audio-player-container {
+    bottom: 85px; /* Stay above floating nav */
+    right: 5%;
+    left: 5%;
+    width: auto;
+    padding: 12px;
+  }
+  
+  .audio-player-minimized {
+    right: 5%;
+    left: auto; /* keep to the right when minimized */
+    bottom: 85px;
+    width: auto;
+  }
+  
+  .track-modal {
+    width: 95%;
+  }
+}

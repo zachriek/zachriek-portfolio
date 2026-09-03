@@ -1,0 +1,25 @@
+.pixel-bg-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: -1;
+  overflow: hidden;
+}
+
+.pixel-square {
+  position: absolute;
+  background-color: var(--accent-color);
+  animation: drift infinite linear alternate;
+}
+
+@keyframes drift {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(calc(30vw * var(--dir-x)), calc(30vh * var(--dir-y)));
+  }
+}
