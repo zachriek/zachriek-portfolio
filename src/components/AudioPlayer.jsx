@@ -24,7 +24,7 @@ const AudioPlayer = ({ autoPlay = false }) => {
   const [currentTrackIndex, setCurrentTrackIndex] = useState(10); // index 10 is 'Fallen Down (Reprise)'
   const [volume, setVolume] = useState(0.5);
   const [isMuted, setIsMuted] = useState(false);
-  const [isMinimized, setIsMinimized] = useState(false);
+  const [isMinimized, setIsMinimized] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const audioRef = useRef(null);
@@ -56,12 +56,12 @@ const AudioPlayer = ({ autoPlay = false }) => {
       const AudioContext = window.AudioContext || window.webkitAudioContext;
       audioContextRef.current = new AudioContext();
       analyserRef.current = audioContextRef.current.createAnalyser();
-      
+
       // Connect audio element to analyser
       sourceRef.current = audioContextRef.current.createMediaElementSource(audioRef.current);
       sourceRef.current.connect(analyserRef.current);
       analyserRef.current.connect(audioContextRef.current.destination);
-      
+
       analyserRef.current.fftSize = 128; // Increased fft for wider global visualizer
     }
 
@@ -73,7 +73,7 @@ const AudioPlayer = ({ autoPlay = false }) => {
   // Draw Visualizer
   function drawVisualizer() {
     if (!canvasRef.current || !analyserRef.current) return;
-    
+
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
     const bufferLength = analyserRef.current.frequencyBinCount;
@@ -102,19 +102,19 @@ const AudioPlayer = ({ autoPlay = false }) => {
         gradient.addColorStop(1, 'rgba(255, 128, 128, 0.2)'); // Fade out at the top
 
         ctx.fillStyle = gradient;
-        
+
         // Add glow effect
         ctx.shadowBlur = 15;
         ctx.shadowColor = 'rgba(155, 28, 33, 0.5)';
-        
+
         // Draw centered vertically (or bottom up, we do bottom up here)
         // Adding a slight border radius effect using roundRect if supported, else fillRect
         if (ctx.roundRect) {
-            ctx.beginPath();
-            ctx.roundRect(x, canvas.height - barHeight, barWidth, barHeight, [4, 4, 0, 0]);
-            ctx.fill();
+          ctx.beginPath();
+          ctx.roundRect(x, canvas.height - barHeight, barWidth, barHeight, [4, 4, 0, 0]);
+          ctx.fill();
         } else {
-            ctx.fillRect(x, canvas.height - barHeight, barWidth, barHeight);
+          ctx.fillRect(x, canvas.height - barHeight, barWidth, barHeight);
         }
 
         x += barWidth + 1;
@@ -186,7 +186,7 @@ const AudioPlayer = ({ autoPlay = false }) => {
 
   return (
     <>
-      <audio 
+      <audio
         ref={audioRef}
         src={`/soundtracks/${TRACKS[currentTrackIndex].file}`}
         loop
@@ -206,8 +206,8 @@ const AudioPlayer = ({ autoPlay = false }) => {
       />
 
       <div className="visualizer-global-container">
-        <canvas 
-          ref={canvasRef} 
+        <canvas
+          ref={canvasRef}
           className="visualizer-canvas"
           height="80"
         ></canvas>
@@ -220,8 +220,8 @@ const AudioPlayer = ({ autoPlay = false }) => {
               <h3 className="player-title">
                 <Music size={16} /> Soundtrack
               </h3>
-              <button 
-                className="minimize-btn" 
+              <button
+                className="minimize-btn"
                 onClick={() => setIsMinimized(true)}
                 title="Minimize Player"
               >
@@ -240,8 +240,8 @@ const AudioPlayer = ({ autoPlay = false }) => {
               </button>
 
               <div className="volume-container">
-                <button 
-                  onClick={toggleMute} 
+                <button
+                  onClick={toggleMute}
                   style={{ background: 'none', border: 'none', color: 'inherit', cursor: 'url(/cursor-hover-small.png), pointer', display: 'flex' }}
                   title={isMuted || volume === 0 ? "Unmute" : "Mute"}
                 >
@@ -284,8 +284,8 @@ const AudioPlayer = ({ autoPlay = false }) => {
             </div>
             <div className="track-list">
               {TRACKS.map((track, idx) => (
-                <button 
-                  key={idx} 
+                <button
+                  key={idx}
                   className={`track-card ${currentTrackIndex === idx ? 'active' : ''}`}
                   onClick={() => selectTrack(idx)}
                 >

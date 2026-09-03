@@ -100,3 +100,8 @@ button:hover {
 ::-webkit-scrollbar-thumb:hover {
   background: var(--accent-color);
 }
+
+::selection {
+  background: var(--accent-color);
+  color: #FAFAFA;
+}

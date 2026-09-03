@@ -59,7 +59,7 @@ function App() {
   if (appState === 'hello') {
     return (
       <div style={{ height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center', background: 'var(--bg-color)', color: 'var(--text-main)' }}>
-        <h1 className="pixel-text-accent" style={{ fontSize: '4rem', animation: 'fadeIn 1s' }}>Hello Friend</h1>
+        <h1 className="pixel-text-accent" style={{ fontSize: '4rem', animation: 'fadeIn 1s', textAlign: 'center' }}>Hello Friend</h1>
       </div>
     )
   }
