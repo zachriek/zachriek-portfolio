@@ -37,15 +37,20 @@ body {
   line-height: 1.6;
   min-height: 100vh;
   /* subtle crt scanline effect / texture */
-  background-image: 
-    linear-gradient(rgba(18, 18, 18, 0) 50%, rgba(0, 0, 0, 0.05) 50%), 
+  background-image:
+    linear-gradient(rgba(18, 18, 18, 0) 50%, rgba(0, 0, 0, 0.05) 50%),
     linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
   background-size: 100% 4px, 3px 100%;
   transition: background-color 0.3s, color 0.3s;
   cursor: url('/cursor-small.png'), auto;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: var(--font-pixel);
   font-weight: normal;
   letter-spacing: 1px;
@@ -69,19 +74,19 @@ button:hover {
 /* Pixel Art Utilities */
 .pixel-border {
   border: 2px solid var(--border-color);
-  box-shadow: 4px 4px 0px rgba(0,0,0,0.3);
+  box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.3);
   transition: transform 0.1s, box-shadow 0.1s;
 }
 
 .pixel-border:hover {
   transform: translate(-2px, -2px);
-  box-shadow: 6px 6px 0px rgba(0,0,0,0.3);
+  box-shadow: 6px 6px 0px rgba(0, 0, 0, 0.3);
   cursor: url('/cursor-hover-small.png'), pointer;
 }
 
 .pixel-text-accent {
   color: var(--accent-color);
-  text-shadow: 2px 2px 0px rgba(0,0,0,0.2);
+  text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.2);
 }
 
 /* Scrollbar styling */
@@ -100,6 +105,7 @@ button:hover {
 
 ::-webkit-scrollbar-thumb:hover {
   background: var(--accent-color);
+  color: #FAFAFA;
 }
 
 ::selection {
