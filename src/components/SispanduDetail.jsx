@@ -65,14 +65,6 @@ const SispanduDetail = ({ onBack }) => {
         {activeTab === 'deskripsi' && (
           <div className="modal-section pixel-border fade-in">
             <h3>1. Deskripsi Project</h3>
-            <div className="image-container mb-6" style={{ marginBottom: '2rem' }}>
-              <img
-                src="/images/sispandu/dashboard.jpg"
-                alt="Sispandu Dashboard"
-                className="dashboard-img pixel-border"
-                onClick={() => setIsImageOpen(true)}
-              />
-            </div>
             <p>
               Sispandu adalah sebuah aplikasi School Management System (Sistem Informasi Manajemen Sekolah)
               yang berskala besar (Enterprise). Aplikasi ini dirancang untuk mendigitalisasi dan mengotomatisasi
