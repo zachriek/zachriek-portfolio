@@ -16,7 +16,11 @@ const TRACKS = [
   { title: "Fallen Down (Reprise)", file: "85. Fallen Down (Reprise).mp3" },
   { title: "Hopes And Dreams", file: "87. Hopes And Dreams.mp3" },
   { title: "Battle Against A True Hero", file: "98. Battle Against A True Hero.mp3" },
-  { title: "MEGALOVANIA", file: "100. MEGALOVANIA.mp3" }
+  { title: "MEGALOVANIA", file: "100. MEGALOVANIA.mp3" },
+  { title: "THE WORLD REVOLVING", file: "THE WORLD REVOLVING.mp3" },
+  { title: "Attack of the Killer Queen", file: "Attack of the Killer Queen.mp3" },
+  { title: "BIG SHOT", file: "BIG SHOT.mp3" },
+  { title: "Black Knife", file: "Black Knife.mp3" }
 ];
 
 const AudioPlayer = ({ autoPlay = false }) => {
