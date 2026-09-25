@@ -1,0 +1,20 @@
+export const TRACKS = [
+  { title: "Ghost Fight", file: "10. Ghost Fight.mp3" },
+  { title: "sans.", file: "15. sans..mp3" },
+  { title: "Shop", file: "23. Shop.mp3" },
+  { title: "Spear of Justice", file: "46. Spear of Justice.mp3" },
+  { title: "It's Showtime!", file: "49. It's Showtime!.mp3" },
+  { title: "Spider Dance", file: "59. Spider Dance.mp3" },
+  { title: "Death By Glamour", file: "68. Death By Glamour.mp3" },
+  { title: "Undertale", file: "71. Undertale.mp3" },
+  { title: "ASGORE", file: "77. ASGORE.mp3" },
+  { title: "Finale", file: "80. Finale.mp3" },
+  { title: "Fallen Down (Reprise)", file: "85. Fallen Down (Reprise).mp3" },
+  { title: "Hopes And Dreams", file: "87. Hopes And Dreams.mp3" },
+  { title: "Battle Against A True Hero", file: "98. Battle Against A True Hero.mp3" },
+  { title: "MEGALOVANIA", file: "100. MEGALOVANIA.mp3" },
+  { title: "THE WORLD REVOLVING", file: "THE WORLD REVOLVING.mp3" },
+  { title: "Attack of the Killer Queen", file: "Attack of the Killer Queen.mp3" },
+  { title: "BIG SHOT", file: "BIG SHOT.mp3" },
+  { title: "Black Knife", file: "Black Knife.mp3" }
+];

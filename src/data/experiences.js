@@ -1,8 +1,4 @@
-import React from 'react';
-import Section from './Section';
-import './Experiences.css';
-
-const experiencesData = [
+export const experiencesData = [
   {
     role: 'Member – Project Division',
     company: 'UKM-U Gerakan Digital Ekosistem Nusantara',
@@ -37,29 +33,3 @@ const experiencesData = [
     ]
   }
 ];
-
-const Experiences = () => {
-  return (
-    <Section id="experiences" title="Experiences">
-      <div className="timeline">
-        {experiencesData.map((exp, index) => (
-          <div key={index} className="timeline-item">
-            <div className="timeline-dot"></div>
-            <div className="timeline-content pixel-border">
-              <h3 className="exp-role pixel-text-accent">{exp.role}</h3>
-              <h4 className="exp-company">{exp.company}</h4>
-              <p className="exp-meta">{exp.duration} | {exp.location}</p>
-              <ul className="exp-desc">
-                {exp.desc.map((item, i) => (
-                  <li key={i}>{item}</li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        ))}
-      </div>
-    </Section>
-  );
-};
-
-export default Experiences;

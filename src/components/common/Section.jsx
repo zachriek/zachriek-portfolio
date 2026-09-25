@@ -1,9 +1,9 @@
 import React from 'react';
 import './Section.css';
 
-const Section = ({ id, title, children }) => {
+export const Section = ({ id, title, children, className = '' }) => {
   return (
-    <section id={id} className="content-section">
+    <section id={id} className={`content-section ${className}`}>
       <h2 className="section-title pixel-text-accent">
         <span className="title-bracket">[</span> {title} <span className="title-bracket">]</span>
       </h2>

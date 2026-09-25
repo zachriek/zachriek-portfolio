@@ -22,14 +22,14 @@
 
 .timeline-dot {
   position: absolute;
-  width: 16px;
-  height: 16px;
+  width: 14px;
+  height: 14px;
   background-color: var(--accent-color);
   border: 2px solid var(--border-color);
-  border-radius: 50%;
-  left: 12px;
+  left: 13px;
   top: 15px;
   z-index: 1;
+  box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.4);
 }
 
 .timeline-content {
@@ -38,8 +38,8 @@
 }
 
 .exp-role {
-  font-size: 1.3rem;
-  margin-bottom: 0.5rem;
+  font-size: 1.25rem;
+  margin-bottom: 0.4rem;
 }
 
 .exp-company {
@@ -50,10 +50,19 @@
 }
 
 .exp-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
   font-size: 0.85rem;
   color: var(--text-muted);
   margin-bottom: 1rem;
-  font-style: italic;
+}
+
+.exp-meta-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
 }
 
 .exp-desc {
@@ -65,4 +74,5 @@
 
 .exp-desc li {
   margin-bottom: 0.5rem;
+  line-height: 1.5;
 }

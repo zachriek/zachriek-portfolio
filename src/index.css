@@ -4,7 +4,7 @@
   --bg-color: #FAFAFA;
   --bg-card: #F0F0F0;
   --bg-card-hover: #E5E5E5;
-  --nav-bg: rgba(240, 240, 240, 0.85);
+  --nav-bg: rgba(240, 240, 240, 0.9);
   --accent-color: #9B1C21;
   --text-main: #121212;
   --text-muted: #555555;
@@ -16,7 +16,7 @@
   --bg-color: #121212;
   --bg-card: #1e1e1e;
   --bg-card-hover: #2a2a2a;
-  --nav-bg: rgba(30, 30, 30, 0.85);
+  --nav-bg: rgba(30, 30, 30, 0.9);
   --accent-color: #9B1C21;
   --text-main: #FAFAFA;
   --text-muted: #a0a0a0;
@@ -74,19 +74,53 @@ button:hover {
 /* Pixel Art Utilities */
 .pixel-border {
   border: 2px solid var(--border-color);
-  box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.3);
+  box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.35);
   transition: transform 0.1s, box-shadow 0.1s;
 }
 
 .pixel-border:hover {
   transform: translate(-2px, -2px);
-  box-shadow: 6px 6px 0px rgba(0, 0, 0, 0.3);
+  box-shadow: 6px 6px 0px rgba(0, 0, 0, 0.4);
   cursor: url('/cursor-hover-small.png'), pointer;
+}
+
+.pixel-btn {
+  background-color: var(--bg-card);
+  color: var(--text-main);
+  padding: 0.75rem 1.5rem;
+  font-family: var(--font-pixel);
+  text-transform: uppercase;
+  font-size: 0.9rem;
+  border: 2px solid var(--border-color);
+  box-shadow: 4px 4px 0px rgba(0,0,0,0.5);
+  transition: all 0.1s;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.pixel-btn:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0px rgba(0,0,0,0.3);
+  color: var(--accent-color);
+  border-color: var(--accent-color);
+}
+
+.pixel-btn:active {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0px rgba(0,0,0,0.3);
 }
 
 .pixel-text-accent {
   color: var(--accent-color);
   text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.2);
+}
+
+/* Pixel Icon Utility */
+.pixel-icon {
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
 }
 
 /* Scrollbar styling */
