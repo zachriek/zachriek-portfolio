@@ -31,8 +31,8 @@ export const AudioPlayer = ({ autoPlay = false }) => {
   // Handle volume change
   useEffect(() => {
     const targetVolume = isMuted ? 0 : volume;
-    if (gainNodeRef.current && audioContextRef.current) {
-      gainNodeRef.current.gain.setValueAtTime(targetVolume, audioContextRef.current.currentTime);
+    if (gainNodeRef.current) {
+      gainNodeRef.current.gain.value = targetVolume;
     }
     if (audioRef.current) {
       audioRef.current.volume = targetVolume;
@@ -48,7 +48,7 @@ export const AudioPlayer = ({ autoPlay = false }) => {
       const gainNode = ctx.createGain();
 
       const initialVolume = isMuted ? 0 : volume;
-      gainNode.gain.setValueAtTime(initialVolume, ctx.currentTime);
+      gainNode.gain.value = initialVolume;
 
       sourceRef.current = ctx.createMediaElementSource(audioRef.current);
       sourceRef.current.connect(analyser);
@@ -81,8 +81,11 @@ export const AudioPlayer = ({ autoPlay = false }) => {
     setIsMuted(prev => {
       const next = !prev;
       const nextVolume = next ? 0 : (volume > 0 ? volume : 0.5);
-      if (gainNodeRef.current && audioContextRef.current) {
-        gainNodeRef.current.gain.setValueAtTime(nextVolume, audioContextRef.current.currentTime);
+      if (gainNodeRef.current) {
+        gainNodeRef.current.gain.value = nextVolume;
+      }
+      if (audioRef.current) {
+        audioRef.current.volume = nextVolume;
       }
       if (!next && volume === 0) {
         setVolume(0.5);
@@ -92,15 +95,18 @@ export const AudioPlayer = ({ autoPlay = false }) => {
   };
 
   const handleVolumeChange = (e) => {
-    const val = parseFloat(e.target.value);
+    const val = Math.max(0, Math.min(1, parseFloat(e.target.value) || 0));
     setVolume(val);
     if (val > 0 && isMuted) {
       setIsMuted(false);
     } else if (val === 0) {
       setIsMuted(true);
     }
-    if (gainNodeRef.current && audioContextRef.current) {
-      gainNodeRef.current.gain.setValueAtTime(val, audioContextRef.current.currentTime);
+    if (gainNodeRef.current) {
+      gainNodeRef.current.gain.value = val;
+    }
+    if (audioRef.current) {
+      audioRef.current.volume = val;
     }
   };
 
@@ -189,7 +195,9 @@ export const AudioPlayer = ({ autoPlay = false }) => {
                   step="0.01"
                   value={isMuted ? 0 : volume}
                   onChange={handleVolumeChange}
-                  title="Volume"
+                  onInput={handleVolumeChange}
+                  title={`Volume: ${Math.round((isMuted ? 0 : volume) * 100)}%`}
+                  aria-label="Volume"
                   style={{ '--volume-progress': `${(isMuted ? 0 : volume) * 100}%` }}
                 />
               </div>
