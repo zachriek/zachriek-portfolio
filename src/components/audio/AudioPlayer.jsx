@@ -1,145 +1,35 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React from 'react';
 import PixelIcon from '../common/PixelIcon';
 import PixelVisualizer from './PixelVisualizer';
 import TrackModal from './TrackModal';
-import { TRACKS } from '../../data/tracks';
+import { useAudio } from '../../context/AudioContext';
 import './AudioPlayer.css';
 
-export const AudioPlayer = ({ autoPlay = false }) => {
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [currentTrackIndex, setCurrentTrackIndex] = useState(10); // Fallen Down (Reprise)
-  const [volume, setVolume] = useState(0.5);
-  const [isMuted, setIsMuted] = useState(false);
-  const [isMinimized, setIsMinimized] = useState(true);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [analyserNode, setAnalyserNode] = useState(null);
-
-  const audioRef = useRef(null);
-  const audioContextRef = useRef(null);
-  const sourceRef = useRef(null);
-  const gainNodeRef = useRef(null);
-
-  // Initialize autoPlay
-  useEffect(() => {
-    if (autoPlay && audioRef.current) {
-      setupAudioContext();
-      audioRef.current.play().catch(e => console.error("Autoplay failed:", e));
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  // Handle volume change
-  useEffect(() => {
-    const targetVolume = isMuted ? 0 : volume;
-    if (gainNodeRef.current) {
-      gainNodeRef.current.gain.value = targetVolume;
-    }
-    if (audioRef.current) {
-      audioRef.current.volume = targetVolume;
-    }
-  }, [volume, isMuted]);
-
-  // Setup Web Audio Context for Pixel Visualizer and Volume Control
-  function setupAudioContext() {
-    if (!audioContextRef.current && audioRef.current) {
-      const AudioContext = window.AudioContext || window.webkitAudioContext;
-      const ctx = new AudioContext();
-      const analyser = ctx.createAnalyser();
-      const gainNode = ctx.createGain();
-
-      const initialVolume = isMuted ? 0 : volume;
-      gainNode.gain.value = initialVolume;
-
-      sourceRef.current = ctx.createMediaElementSource(audioRef.current);
-      sourceRef.current.connect(analyser);
-      analyser.connect(gainNode);
-      gainNode.connect(ctx.destination);
-
-      analyser.fftSize = 128; // Optimal frequency bins for 8-bit visualizer
-      audioContextRef.current = ctx;
-      gainNodeRef.current = gainNode;
-      setAnalyserNode(analyser);
-    }
-
-    if (audioContextRef.current && audioContextRef.current.state === 'suspended') {
-      audioContextRef.current.resume().catch(e => console.warn("AudioContext resume failed:", e));
-    }
-  }
-
-  const togglePlay = () => {
-    if (!audioRef.current) return;
-
-    if (isPlaying) {
-      audioRef.current.pause();
-    } else {
-      setupAudioContext();
-      audioRef.current.play().catch(e => console.error("Playback error:", e));
-    }
-  };
-
-  const toggleMute = () => {
-    setIsMuted(prev => {
-      const next = !prev;
-      const nextVolume = next ? 0 : (volume > 0 ? volume : 0.5);
-      if (gainNodeRef.current) {
-        gainNodeRef.current.gain.value = nextVolume;
-      }
-      if (audioRef.current) {
-        audioRef.current.volume = nextVolume;
-      }
-      if (!next && volume === 0) {
-        setVolume(0.5);
-      }
-      return next;
-    });
-  };
-
-  const handleVolumeChange = (e) => {
-    const val = Math.max(0, Math.min(1, parseFloat(e.target.value) || 0));
-    setVolume(val);
-    if (val > 0 && isMuted) {
-      setIsMuted(false);
-    } else if (val === 0) {
-      setIsMuted(true);
-    }
-    if (gainNodeRef.current) {
-      gainNodeRef.current.gain.value = val;
-    }
-    if (audioRef.current) {
-      audioRef.current.volume = val;
-    }
-  };
-
-  const selectTrack = (index) => {
-    setCurrentTrackIndex(index);
-    setIsModalOpen(false);
-    setTimeout(() => {
-      if (audioRef.current) {
-        setupAudioContext();
-        audioRef.current.play().catch(e => console.error("Select track play error:", e));
-      }
-    }, 50);
-  };
+export const AudioPlayer = () => {
+  const {
+    tracks,
+    currentTrack,
+    currentTrackIndex,
+    isPlaying,
+    volume,
+    isMuted,
+    isMinimized,
+    isModalOpen,
+    analyserNode,
+    setIsMinimized,
+    setIsModalOpen,
+    togglePlay,
+    toggleMute,
+    handleVolumeChange,
+    selectTrack
+  } = useAudio();
 
   return (
     <>
-      <audio
-        ref={audioRef}
-        src={`/soundtracks/${TRACKS[currentTrackIndex].file}`}
-        loop
-        crossOrigin="anonymous"
-        onPlay={() => {
-          setIsPlaying(true);
-          setupAudioContext();
-        }}
-        onPause={() => setIsPlaying(false)}
-        onError={(e) => console.error("Audio error:", e)}
-      />
-
       {/* Retro Pixel Equalizer Visualizer */}
       <PixelVisualizer analyserNode={analyserNode} isPlaying={isPlaying} />
 
-      {/* Floating Audio Player Widget */}
+      {/* Floating Audio Player Widget (Desktop) */}
       <div className={`audio-player-container pixel-border ${isMinimized ? 'audio-player-minimized' : ''}`}>
         {!isMinimized ? (
           <>
@@ -158,7 +48,7 @@ export const AudioPlayer = ({ autoPlay = false }) => {
             </div>
 
             <button className="track-select-btn" onClick={() => setIsModalOpen(true)}>
-              <span>{TRACKS[currentTrackIndex].title}</span>
+              <span>{currentTrack.title}</span>
               <PixelIcon name="list-music" size={16} />
             </button>
 
@@ -232,7 +122,7 @@ export const AudioPlayer = ({ autoPlay = false }) => {
       <TrackModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        tracks={TRACKS}
+        tracks={tracks}
         currentTrackIndex={currentTrackIndex}
         isPlaying={isPlaying}
         onSelectTrack={selectTrack}

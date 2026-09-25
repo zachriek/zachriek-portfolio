@@ -12,7 +12,7 @@
   flex-direction: column;
   gap: 12px;
   width: 320px;
-  box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.4);
+  box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.6);
   z-index: 1000;
   color: var(--text-main);
   transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.2s ease;
@@ -22,7 +22,7 @@
 
 .audio-player-container:hover {
   transform: translate(-2px, -2px);
-  box-shadow: 6px 6px 0px rgba(0, 0, 0, 0.45);
+  box-shadow: 6px 6px 0px rgba(0, 0, 0, 0.7);
 }
 
 .player-header {
@@ -56,14 +56,14 @@
   cursor: url('/cursor-hover-small.png'), pointer;
   transition: all 0.15s ease;
   font-family: inherit;
-  box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.2);
+  box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.4);
 }
 
 .track-select-btn:hover {
   background: var(--bg-card-hover);
   border-color: var(--accent-color);
   transform: translate(-1px, -1px);
-  box-shadow: 3px 3px 0px rgba(0, 0, 0, 0.25);
+  box-shadow: 3px 3px 0px rgba(0, 0, 0, 0.5);
 }
 
 /* Controls */
@@ -84,19 +84,19 @@
   justify-content: center;
   cursor: url('/cursor-hover-small.png'), pointer;
   transition: transform 0.1s ease, background 0.15s ease, box-shadow 0.1s ease;
-  box-shadow: 3px 3px 0px rgba(0, 0, 0, 0.35);
+  box-shadow: 3px 3px 0px rgba(0, 0, 0, 0.5);
   flex-shrink: 0;
 }
 
 .play-btn:hover {
   transform: translate(-1px, -1px);
-  box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.4);
+  box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.6);
   background: #b52228;
 }
 
 .play-btn:active {
   transform: translate(1px, 1px);
-  box-shadow: 1px 1px 0px rgba(0, 0, 0, 0.3);
+  box-shadow: 1px 1px 0px rgba(0, 0, 0, 0.4);
 }
 
 .volume-container {
@@ -153,7 +153,7 @@
   background: var(--text-main);
   border: 1px solid var(--border-color);
   border-radius: 0;
-  box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.5);
+  box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.6);
   cursor: url('/cursor-hover-small.png'), pointer;
 }
 
@@ -177,7 +177,7 @@
   background: var(--text-main);
   border: 1px solid var(--border-color);
   border-radius: 0;
-  box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.5);
+  box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.6);
   cursor: url('/cursor-hover-small.png'), pointer;
 }
 
@@ -236,9 +236,9 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
   z-index: 2000;
   display: flex;
   align-items: center;
@@ -260,7 +260,7 @@
   display: flex;
   flex-direction: column;
   border: 2px solid var(--border-color);
-  box-shadow: 6px 6px 0px rgba(0, 0, 0, 0.5);
+  box-shadow: 6px 6px 0px rgba(0, 0, 0, 0.8);
   overflow: hidden;
   font-family: var(--font-pixel);
   animation: modalPop 0.2s forwards;
@@ -324,9 +324,9 @@
 }
 
 .track-card.active {
-  background: rgba(155, 28, 33, 0.15);
+  background: rgba(155, 28, 33, 0.25);
   border-color: var(--accent-color);
-  color: var(--accent-color);
+  color: #ff7675;
 }
 
 .track-card-icon {
@@ -365,23 +365,14 @@
   image-rendering: crisp-edges;
 }
 
+/* Mobile: hide floating desktop player since controls are in the bottom bar */
 @media (max-width: 768px) {
   .audio-player-container {
-    bottom: 85px;
-    right: 5%;
-    left: 5%;
-    width: auto;
-    padding: 12px;
-  }
-
-  .audio-player-minimized {
-    right: 5%;
-    left: auto;
-    bottom: 85px;
-    width: auto;
+    display: none !important;
   }
 
   .track-modal {
     width: 95%;
+    max-height: 80vh;
   }
 }

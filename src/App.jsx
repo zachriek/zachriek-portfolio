@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Layout from './components/layout/Layout';
 import Hero from './components/sections/Hero';
 import Experiences from './components/sections/Experiences';
@@ -9,16 +9,6 @@ import PixelButton from './components/common/PixelButton';
 
 function App() {
   const [appState, setAppState] = useState('start'); // 'start', 'hello', 'main'
-
-  // Initialize theme before Layout mounts
-  useEffect(() => {
-    const isDark = localStorage.getItem('theme') !== 'light';
-    if (isDark) {
-      document.documentElement.setAttribute('data-theme', 'dark');
-    } else {
-      document.documentElement.removeAttribute('data-theme');
-    }
-  }, []);
 
   const handleStart = () => {
     setAppState('hello');

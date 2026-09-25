@@ -19,13 +19,14 @@
   left: 50%;
   transform: translateX(-50%);
   background-color: var(--nav-bg);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   padding: 0.6rem 1.5rem;
   border-radius: 40px;
   border: 2px solid var(--border-color);
   z-index: 1000;
-  box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.4);
+  box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.5);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .nav-links {
@@ -45,19 +46,26 @@
   transition: all 0.15s ease;
   padding: 0.5rem;
   border-radius: 50%;
-}
-
-.nav-item:hover {
-  color: var(--accent-color);
-  background-color: rgba(155, 28, 33, 0.15);
-  transform: translateY(-2px);
-}
-
-.theme-toggle {
   background: none;
   border: none;
   cursor: url('/cursor-hover-small.png'), pointer;
   outline: none;
+}
+
+.nav-item:hover {
+  color: var(--text-main);
+  background-color: rgba(155, 28, 33, 0.25);
+  transform: translateY(-2px);
+}
+
+.nav-item:active {
+  transform: translateY(1px);
+}
+
+/* Audio items hidden on desktop (desktop has dedicated floating widget) */
+.mobile-audio-divider,
+.mobile-audio-item {
+  display: none;
 }
 
 .footer {
@@ -71,7 +79,7 @@
 
 @media (max-width: 768px) {
   .layout-container {
-    padding-bottom: 160px;
+    padding-bottom: 90px;
   }
 
   .content {
@@ -79,19 +87,73 @@
   }
 
   .floating-nav {
-    width: 90%;
-    max-width: 360px;
-    padding: 0.5rem 1rem;
+    width: auto;
+    max-width: calc(100vw - 24px);
+    padding: 0.4rem 0.75rem;
     bottom: 1rem;
+    border-radius: 30px;
   }
 
   .nav-links {
-    justify-content: space-around;
+    justify-content: center;
     width: 100%;
-    gap: 0.5rem;
+    gap: 0.4rem;
   }
 
   .nav-item {
     padding: 0.4rem;
+  }
+
+  /* One row audio controls for mobile */
+  .mobile-audio-divider {
+    display: block;
+    width: 2px;
+    height: 20px;
+    background-color: var(--border-color);
+    opacity: 0.5;
+    margin: 0 4px;
+    flex-shrink: 0;
+  }
+
+  .mobile-audio-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .mobile-track-btn {
+    color: var(--text-main);
+    border-radius: 50%;
+  }
+
+  .mobile-track-btn:hover {
+    color: var(--accent-color);
+  }
+
+  .mobile-play-btn {
+    background-color: var(--accent-color);
+    color: #ffffff;
+    border: 1px solid var(--border-color);
+    box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.4);
+    border-radius: 6px;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+  }
+
+  .mobile-play-btn:hover {
+    background-color: #b52228;
+    color: #ffffff;
+    transform: translateY(-1px);
+  }
+
+  .mobile-play-btn:active {
+    transform: translateY(1px);
+    box-shadow: 1px 1px 0px rgba(0, 0, 0, 0.3);
+  }
+
+  .mobile-play-btn.is-playing {
+    background-color: var(--accent-color);
   }
 }

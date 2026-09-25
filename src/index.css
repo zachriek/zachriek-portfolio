@@ -1,26 +1,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&display=swap');
 
 :root {
-  --bg-color: #FAFAFA;
-  --bg-card: #F0F0F0;
-  --bg-card-hover: #E5E5E5;
-  --nav-bg: rgba(240, 240, 240, 0.9);
+  --bg-color: #000000;
+  --bg-card: #080808;
+  --bg-card-hover: #141414;
+  --nav-bg: rgba(0, 0, 0, 0.92);
   --accent-color: #9B1C21;
-  --text-main: #121212;
-  --text-muted: #555555;
-  --border-color: #333333;
+  --text-main: #FFFFFF;
+  --text-muted: #d4d4d4;
+  --border-color: #383838;
   --font-pixel: 'Silkscreen', cursive, monospace;
-}
-
-[data-theme='dark'] {
-  --bg-color: #121212;
-  --bg-card: #1e1e1e;
-  --bg-card-hover: #2a2a2a;
-  --nav-bg: rgba(30, 30, 30, 0.9);
-  --accent-color: #9B1C21;
-  --text-main: #FAFAFA;
-  --text-muted: #a0a0a0;
-  --border-color: #333333;
 }
 
 * {
@@ -36,12 +25,11 @@ body {
   font-family: var(--font-pixel);
   line-height: 1.6;
   min-height: 100vh;
-  /* subtle crt scanline effect / texture */
+  /* subtle crt scanline effect / texture on pure black */
   background-image:
-    linear-gradient(rgba(18, 18, 18, 0) 50%, rgba(0, 0, 0, 0.05) 50%),
-    linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+    linear-gradient(rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0.35) 50%),
+    linear-gradient(90deg, rgba(255, 0, 0, 0.02), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.02));
   background-size: 100% 4px, 3px 100%;
-  transition: background-color 0.3s, color 0.3s;
   cursor: url('/cursor-small.png'), auto;
 }
 
@@ -74,13 +62,13 @@ button:hover {
 /* Pixel Art Utilities */
 .pixel-border {
   border: 2px solid var(--border-color);
-  box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.35);
-  transition: transform 0.1s, box-shadow 0.1s;
+  box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.8);
+  transition: transform 0.1s, box-shadow 0.1s, border-color 0.2s;
 }
 
 .pixel-border:hover {
   transform: translate(-2px, -2px);
-  box-shadow: 6px 6px 0px rgba(0, 0, 0, 0.4);
+  box-shadow: 6px 6px 0px rgba(0, 0, 0, 0.9);
   cursor: url('/cursor-hover-small.png'), pointer;
 }
 
@@ -92,7 +80,7 @@ button:hover {
   text-transform: uppercase;
   font-size: 0.9rem;
   border: 2px solid var(--border-color);
-  box-shadow: 4px 4px 0px rgba(0,0,0,0.5);
+  box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.8);
   transition: all 0.1s;
   display: inline-flex;
   align-items: center;
@@ -101,19 +89,19 @@ button:hover {
 
 .pixel-btn:hover {
   transform: translate(-2px, -2px);
-  box-shadow: 6px 6px 0px rgba(0,0,0,0.3);
-  color: var(--accent-color);
+  box-shadow: 6px 6px 0px rgba(0, 0, 0, 0.9);
+  color: #ff7675;
   border-color: var(--accent-color);
 }
 
 .pixel-btn:active {
   transform: translate(2px, 2px);
-  box-shadow: 2px 2px 0px rgba(0,0,0,0.3);
+  box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.8);
 }
 
 .pixel-text-accent {
   color: var(--accent-color);
-  text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.2);
+  text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.8);
 }
 
 /* Pixel Icon Utility */
@@ -133,7 +121,7 @@ button:hover {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--border-color);
+  background: #252525;
   border: 1px solid var(--bg-color);
 }
 
@@ -143,5 +131,5 @@ button:hover {
 
 ::selection {
   background: var(--accent-color);
-  color: #FAFAFA;
+  color: #FFFFFF;
 }

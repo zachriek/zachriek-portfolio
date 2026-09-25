@@ -129,7 +129,7 @@ const PixelBoxSprite = ({ type, size }) => {
           <rect x="2" y="2" width="8" height="2" fill="rgba(255, 255, 255, 0.4)" />
           <rect x="2" y="2" width="2" height="8" fill="rgba(255, 255, 255, 0.4)" />
           {/* Center hollow or dot */}
-          <rect x="5" y="5" width="4" height="4" fill="var(--bg-color, #121212)" />
+          <rect x="5" y="5" width="4" height="4" fill="var(--bg-color, #000000)" />
         </svg>
       );
   }

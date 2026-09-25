@@ -1,7 +1,10 @@
 import React from 'react';
 import PixelIcon from '../common/PixelIcon';
+import { useAudio } from '../../context/AudioContext';
 
-export const Navbar = ({ isDark, onToggleTheme }) => {
+export const Navbar = () => {
+  const { isPlaying, togglePlay, setIsModalOpen } = useAudio();
+
   const navItems = [
     { href: '#about', title: 'Tentang Saya', icon: 'home' },
     { href: '#experiences', title: 'Pengalaman', icon: 'briefcase' },
@@ -19,14 +22,33 @@ export const Navbar = ({ isDark, onToggleTheme }) => {
             </a>
           </li>
         ))}
-        <li>
+
+        {/* Audio controls integrated in one row for mobile */}
+        <li className="mobile-audio-divider" aria-hidden="true"></li>
+
+        <li className="mobile-audio-item">
           <button
-            onClick={onToggleTheme}
-            className="nav-item theme-toggle"
-            title={isDark ? 'Ganti ke Mode Terang' : 'Ganti ke Mode Gelap'}
-            aria-label="Toggle Theme"
+            onClick={() => setIsModalOpen(true)}
+            className="nav-item mobile-track-btn"
+            title="Pilih Soundtrack"
+            aria-label="Pilih Soundtrack"
           >
-            <PixelIcon name={isDark ? 'sun' : 'moon'} size={22} />
+            <PixelIcon name="music" size={20} />
+          </button>
+        </li>
+
+        <li className="mobile-audio-item">
+          <button
+            onClick={togglePlay}
+            className={`nav-item mobile-play-btn ${isPlaying ? 'is-playing' : ''}`}
+            title={isPlaying ? 'Jeda Musik' : 'Putar Musik'}
+            aria-label={isPlaying ? 'Jeda Musik' : 'Putar Musik'}
+          >
+            {isPlaying ? (
+              <PixelIcon name="pause" size={18} />
+            ) : (
+              <PixelIcon name="play" size={18} style={{ marginLeft: '2px' }} />
+            )}
           </button>
         </li>
       </ul>
