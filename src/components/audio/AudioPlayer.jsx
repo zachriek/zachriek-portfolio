@@ -17,6 +17,7 @@ export const AudioPlayer = ({ autoPlay = false }) => {
   const audioRef = useRef(null);
   const audioContextRef = useRef(null);
   const sourceRef = useRef(null);
+  const gainNodeRef = useRef(null);
 
   // Initialize autoPlay
   useEffect(() => {
@@ -29,24 +30,34 @@ export const AudioPlayer = ({ autoPlay = false }) => {
 
   // Handle volume change
   useEffect(() => {
+    const targetVolume = isMuted ? 0 : volume;
+    if (gainNodeRef.current && audioContextRef.current) {
+      gainNodeRef.current.gain.setValueAtTime(targetVolume, audioContextRef.current.currentTime);
+    }
     if (audioRef.current) {
-      audioRef.current.volume = isMuted ? 0 : volume;
+      audioRef.current.volume = targetVolume;
     }
   }, [volume, isMuted]);
 
-  // Setup Web Audio Context for Pixel Visualizer
+  // Setup Web Audio Context for Pixel Visualizer and Volume Control
   function setupAudioContext() {
     if (!audioContextRef.current && audioRef.current) {
       const AudioContext = window.AudioContext || window.webkitAudioContext;
       const ctx = new AudioContext();
       const analyser = ctx.createAnalyser();
+      const gainNode = ctx.createGain();
+
+      const initialVolume = isMuted ? 0 : volume;
+      gainNode.gain.setValueAtTime(initialVolume, ctx.currentTime);
 
       sourceRef.current = ctx.createMediaElementSource(audioRef.current);
       sourceRef.current.connect(analyser);
-      analyser.connect(ctx.destination);
+      analyser.connect(gainNode);
+      gainNode.connect(ctx.destination);
 
       analyser.fftSize = 128; // Optimal frequency bins for 8-bit visualizer
       audioContextRef.current = ctx;
+      gainNodeRef.current = gainNode;
       setAnalyserNode(analyser);
     }
 
@@ -66,7 +77,19 @@ export const AudioPlayer = ({ autoPlay = false }) => {
     }
   };
 
-  const toggleMute = () => setIsMuted(!isMuted);
+  const toggleMute = () => {
+    setIsMuted(prev => {
+      const next = !prev;
+      const nextVolume = next ? 0 : (volume > 0 ? volume : 0.5);
+      if (gainNodeRef.current && audioContextRef.current) {
+        gainNodeRef.current.gain.setValueAtTime(nextVolume, audioContextRef.current.currentTime);
+      }
+      if (!next && volume === 0) {
+        setVolume(0.5);
+      }
+      return next;
+    });
+  };
 
   const handleVolumeChange = (e) => {
     const val = parseFloat(e.target.value);
@@ -75,6 +98,9 @@ export const AudioPlayer = ({ autoPlay = false }) => {
       setIsMuted(false);
     } else if (val === 0) {
       setIsMuted(true);
+    }
+    if (gainNodeRef.current && audioContextRef.current) {
+      gainNodeRef.current.gain.setValueAtTime(val, audioContextRef.current.currentTime);
     }
   };
 

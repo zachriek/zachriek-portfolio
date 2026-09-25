@@ -9,17 +9,46 @@
   overflow: hidden;
 }
 
-.pixel-square {
+.pixel-particle {
   position: absolute;
-  background-color: var(--accent-color);
-  animation: drift infinite linear alternate;
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+  transform: translate(0, 0);
+  animation: 
+    pixelDrift var(--drift-duration, 20s) steps(var(--anim-steps, 16), end) infinite alternate,
+    pixelBob var(--bob-duration, 5s) steps(4, end) infinite alternate;
+  will-change: transform;
 }
 
-@keyframes drift {
+.pixel-particle svg {
+  display: block;
+  image-rendering: pixelated;
+  filter: drop-shadow(2px 2px 0px rgba(0, 0, 0, 0.45));
+}
+
+/* Stepped pixel drift animation */
+@keyframes pixelDrift {
   0% {
     transform: translate(0, 0);
   }
   100% {
-    transform: translate(calc(30vw * var(--dir-x)), calc(30vh * var(--dir-y)));
+    transform: translate(var(--move-x, 100px), var(--move-y, 80px));
+  }
+}
+
+/* Stepped pixel bobbing and subtle glint */
+@keyframes pixelBob {
+  0% {
+    margin-top: 0px;
+    filter: brightness(0.85);
+  }
+  50% {
+    margin-top: 4px;
+    filter: brightness(1.15);
+  }
+  100% {
+    margin-top: 8px;
+    filter: brightness(1);
   }
 }
