@@ -1,16 +1,5 @@
 export const experiencesData = [
   {
-    role: 'Member – Project Division',
-    company: 'UKM-U Gerakan Digital Ekosistem Nusantara',
-    duration: 'December 2024 - Present',
-    location: 'University of Lampung',
-    desc: [
-      'Participated in the Edutech program, completing a JavaScript language course.',
-      'Served as a fundraiser for the Gradien Programming Competition event.',
-      'Contributed as a frontend developer in the internal project Sistem Klinik Advokasi Mahasiswa.'
-    ]
-  },
-  {
     role: 'Frontend Intern',
     company: 'Core Initiative Studio x Rakamin',
     duration: 'January 2024 - February 2024',
