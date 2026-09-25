@@ -30,8 +30,8 @@ export const Navbar = () => {
           <button
             onClick={() => setIsModalOpen(true)}
             className="nav-item mobile-track-btn"
-            title="Pilih Soundtrack"
-            aria-label="Pilih Soundtrack"
+            title="Soundtrack"
+            aria-label="Soundtrack"
           >
             <PixelIcon name="music" size={20} />
           </button>

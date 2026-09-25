@@ -17,7 +17,7 @@ export const TrackModal = ({
         <div className="track-modal-header">
           <h2>
             <PixelIcon name="list-music" size={20} />
-            <span>Pilih Soundtrack</span>
+            <span>Soundtrack</span>
           </h2>
           <button className="modal-close" onClick={onClose} title="Tutup Modal">
             <PixelIcon name="close" size={18} />
