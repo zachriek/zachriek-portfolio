@@ -1,19 +1,21 @@
 import React, { useState } from 'react';
-import Layout from './components/layout/Layout';
-import Hero from './components/sections/Hero';
-import Experiences from './components/sections/Experiences';
-import Educations from './components/sections/Educations';
-import Achievements from './components/sections/Achievements';
+import BackgroundAnimation from './components/layout/BackgroundAnimation';
+import LinuxTerminal from './components/terminal/LinuxTerminal';
 import PixelIcon from './components/common/PixelIcon';
 import PixelButton from './components/common/PixelButton';
+import { AudioProvider } from './context/AudioContext';
+import useSoundEffects from './hooks/useSoundEffects';
 
 function App() {
   const [appState, setAppState] = useState('start'); // 'start', 'hello', 'main'
 
+  // Enable retro Undertale hover/click sound effects
+  useSoundEffects(true);
+
   const handleStart = () => {
     setAppState('hello');
     const introAudio = new Audio('/mus_intronoise.mp3');
-    introAudio.play().catch(e => console.error("Intro audio error:", e));
+    introAudio.play().catch((e) => console.error('Intro audio error:', e));
 
     setTimeout(() => {
       setAppState('main');
@@ -22,28 +24,42 @@ function App() {
 
   if (appState === 'start') {
     return (
-      <div style={{ height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center', background: 'var(--bg-color)' }}>
-        <PixelButton
-          onClick={handleStart}
-          size="lg"
-          variant="default"
-          style={{
-            padding: '16px 36px',
-            fontSize: '1.4rem',
-            gap: '12px'
-          }}
-        >
-          <PixelIcon name="play" size={24} />
-          <span>START</span>
-        </PixelButton>
+      <div style={{ position: 'relative', height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center', background: 'var(--bg-color)', overflow: 'hidden' }}>
+        <BackgroundAnimation />
+        <div style={{ position: 'relative', zIndex: 10 }}>
+          <PixelButton
+            onClick={handleStart}
+            size="lg"
+            variant="default"
+            style={{
+              padding: '16px 36px',
+              fontSize: '1.4rem',
+              gap: '12px'
+            }}
+          >
+            <PixelIcon name="play" size={24} />
+            <span>START</span>
+          </PixelButton>
+        </div>
       </div>
     );
   }
 
   if (appState === 'hello') {
     return (
-      <div style={{ height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center', background: 'var(--bg-color)', color: 'var(--text-main)' }}>
-        <h1 className="pixel-text-accent" style={{ fontSize: '3.5rem', animation: 'fadeIn 0.8s', textAlign: 'center', letterSpacing: '2px' }}>
+      <div style={{ position: 'relative', height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center', background: 'var(--bg-color)', color: 'var(--text-main)', overflow: 'hidden' }}>
+        <BackgroundAnimation />
+        <h1
+          className="pixel-text-accent"
+          style={{
+            position: 'relative',
+            zIndex: 10,
+            fontSize: '3.5rem',
+            animation: 'fadeIn 0.8s',
+            textAlign: 'center',
+            letterSpacing: '2px'
+          }}
+        >
           Hello Friend
         </h1>
       </div>
@@ -51,12 +67,12 @@ function App() {
   }
 
   return (
-    <Layout autoPlayAudio={true}>
-      <Hero />
-      <Experiences />
-      <Educations />
-      <Achievements />
-    </Layout>
+    <AudioProvider autoPlay={true}>
+      <div style={{ position: 'relative', minHeight: '100vh', width: '100%', overflowX: 'hidden' }}>
+        <BackgroundAnimation />
+        <LinuxTerminal />
+      </div>
+    </AudioProvider>
   );
 }
 

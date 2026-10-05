@@ -8,8 +8,9 @@
   --accent-color: #9B1C21;
   --text-main: #FFFFFF;
   --text-muted: #d4d4d4;
-  --border-color: #383838;
+  --border-color: #FFFFFF;
   --font-pixel: 'Silkscreen', cursive, monospace;
+  --font-mono: 'Consolas', 'Courier New', monospace;
 }
 
 * {
@@ -25,11 +26,7 @@ body {
   font-family: var(--font-pixel);
   line-height: 1.6;
   min-height: 100vh;
-  /* subtle crt scanline effect / texture on pure black */
-  background-image:
-    linear-gradient(rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0.35) 50%),
-    linear-gradient(90deg, rgba(255, 0, 0, 0.02), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.02));
-  background-size: 100% 4px, 3px 100%;
+  background-image: none;
 }
 
 h1,

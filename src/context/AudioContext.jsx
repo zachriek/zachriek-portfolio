@@ -109,6 +109,33 @@ export const AudioProvider = ({ children, autoPlay = false }) => {
     }
   };
 
+  const playAudio = () => {
+    if (!audioRef.current) return;
+    setupAudioContext();
+    audioRef.current.play().catch(e => console.error("Play error:", e));
+  };
+
+  const pauseAudio = () => {
+    if (!audioRef.current) return;
+    audioRef.current.pause();
+  };
+
+  const setVolumeDirect = (val) => {
+    const clamped = Math.max(0, Math.min(1, parseFloat(val) || 0));
+    setVolume(clamped);
+    if (clamped > 0 && isMuted) {
+      setIsMuted(false);
+    } else if (clamped === 0) {
+      setIsMuted(true);
+    }
+    if (gainNodeRef.current) {
+      gainNodeRef.current.gain.value = clamped;
+    }
+    if (audioRef.current) {
+      audioRef.current.volume = clamped;
+    }
+  };
+
   const selectTrack = (index) => {
     setCurrentTrackIndex(index);
     setIsModalOpen(false);
@@ -138,6 +165,9 @@ export const AudioProvider = ({ children, autoPlay = false }) => {
     setIsMinimized,
     setIsModalOpen,
     togglePlay,
+    playAudio,
+    pauseAudio,
+    setVolumeDirect,
     toggleMute,
     handleVolumeChange,
     selectTrack
@@ -180,6 +210,9 @@ export const useAudio = () => {
       setIsMinimized: () => {},
       setIsModalOpen: () => {},
       togglePlay: () => {},
+      playAudio: () => {},
+      pauseAudio: () => {},
+      setVolumeDirect: () => {},
       toggleMute: () => {},
       handleVolumeChange: () => {},
       selectTrack: () => {}
