@@ -2,7 +2,8 @@
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  padding-bottom: 110px; /* Space for floating nav */
+  padding-bottom: 110px;
+  /* Space for floating nav */
 }
 
 .content {
@@ -48,7 +49,6 @@
   border-radius: 50%;
   background: none;
   border: none;
-  cursor: url('/cursor-hover-small.png'), pointer;
   outline: none;
 }
 

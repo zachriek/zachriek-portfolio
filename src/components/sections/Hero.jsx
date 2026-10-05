@@ -1,16 +1,26 @@
 import React from 'react';
 import PixelIcon from '../common/PixelIcon';
 import { profileData } from '../../data/profile';
+import { useAudio } from '../../context/AudioContext';
 import './Hero.css';
 
 export const Hero = () => {
+  const { currentAvatar, currentTrack } = useAudio();
+  const avatarSrc = currentAvatar || profileData.avatar;
+
   return (
     <section id="about" className="hero-section">
       <div className="avatar-container pixel-border">
         <img
-          src={profileData.avatar}
-          alt={profileData.name}
+          key={avatarSrc}
+          src={avatarSrc}
+          alt={currentTrack?.title ? `${profileData.name} - ${currentTrack.title}` : profileData.name}
           className="avatar-img"
+          onError={(e) => {
+            if (e.currentTarget.src !== profileData.avatar) {
+              e.currentTarget.src = profileData.avatar;
+            }
+          }}
         />
       </div>
 

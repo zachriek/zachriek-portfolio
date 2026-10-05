@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
 import { TRACKS } from '../data/tracks';
+import { getProfileAvatar } from '../data/profile';
 
 const AudioContext = createContext(null);
 
@@ -119,11 +120,15 @@ export const AudioProvider = ({ children, autoPlay = false }) => {
     }, 50);
   };
 
+  const currentTrack = TRACKS[currentTrackIndex];
+  const currentAvatar = getProfileAvatar(currentTrack);
+
   const value = {
     audioRef,
     tracks: TRACKS,
-    currentTrack: TRACKS[currentTrackIndex],
+    currentTrack,
     currentTrackIndex,
+    currentAvatar,
     isPlaying,
     volume,
     isMuted,
@@ -160,7 +165,25 @@ export const AudioProvider = ({ children, autoPlay = false }) => {
 export const useAudio = () => {
   const context = useContext(AudioContext);
   if (!context) {
-    throw new Error('useAudio must be used within an AudioProvider');
+    return {
+      audioRef: { current: null },
+      tracks: TRACKS,
+      currentTrack: TRACKS[10] || null,
+      currentTrackIndex: 10,
+      currentAvatar: getProfileAvatar(TRACKS[10]),
+      isPlaying: false,
+      volume: 0.5,
+      isMuted: false,
+      isMinimized: true,
+      isModalOpen: false,
+      analyserNode: null,
+      setIsMinimized: () => {},
+      setIsModalOpen: () => {},
+      togglePlay: () => {},
+      toggleMute: () => {},
+      handleVolumeChange: () => {},
+      selectTrack: () => {}
+    };
   }
   return context;
 };

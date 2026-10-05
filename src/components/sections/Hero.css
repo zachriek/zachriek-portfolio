@@ -18,11 +18,24 @@
   overflow: hidden;
 }
 
+@keyframes avatarPop {
+  0% {
+    opacity: 0.7;
+    transform: scale(0.96);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
 .avatar-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  animation: avatarPop 0.25s ease-out;
 }
 
 .hero-title {

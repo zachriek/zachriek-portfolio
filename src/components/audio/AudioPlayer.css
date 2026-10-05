@@ -53,7 +53,6 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  cursor: url('/cursor-hover-small.png'), pointer;
   transition: all 0.15s ease;
   font-family: inherit;
   box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.4);
@@ -82,7 +81,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: url('/cursor-hover-small.png'), pointer;
   transition: transform 0.1s ease, background 0.15s ease, box-shadow 0.1s ease;
   box-shadow: 3px 3px 0px rgba(0, 0, 0, 0.5);
   flex-shrink: 0;
@@ -110,7 +108,6 @@
   background: none;
   border: none;
   color: inherit;
-  cursor: url('/cursor-hover-small.png'), pointer;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -124,7 +121,6 @@
   height: 24px;
   background: transparent;
   outline: none;
-  cursor: url('/cursor-hover-small.png'), pointer;
   margin: 0;
   padding: 0;
   display: block;
@@ -134,13 +130,10 @@
 .volume-slider::-webkit-slider-runnable-track {
   width: 100%;
   height: 8px;
-  background: linear-gradient(
-    to right,
-    var(--accent-color) var(--volume-progress, 50%),
-    var(--border-color) var(--volume-progress, 50%)
-  );
+  background: linear-gradient(to right,
+      var(--accent-color) var(--volume-progress, 50%),
+      var(--border-color) var(--volume-progress, 50%));
   border: 1px solid var(--border-color);
-  cursor: url('/cursor-hover-small.png'), pointer;
 }
 
 /* WebKit / Chromium Thumb */
@@ -154,20 +147,16 @@
   border: 1px solid var(--border-color);
   border-radius: 0;
   box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.6);
-  cursor: url('/cursor-hover-small.png'), pointer;
 }
 
 /* Firefox Track */
 .volume-slider::-moz-range-track {
   width: 100%;
   height: 8px;
-  background: linear-gradient(
-    to right,
-    var(--accent-color) var(--volume-progress, 50%),
-    var(--border-color) var(--volume-progress, 50%)
-  );
+  background: linear-gradient(to right,
+      var(--accent-color) var(--volume-progress, 50%),
+      var(--border-color) var(--volume-progress, 50%));
   border: 1px solid var(--border-color);
-  cursor: url('/cursor-hover-small.png'), pointer;
 }
 
 /* Firefox Thumb */
@@ -178,7 +167,6 @@
   border: 1px solid var(--border-color);
   border-radius: 0;
   box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.6);
-  cursor: url('/cursor-hover-small.png'), pointer;
 }
 
 /* Hover Thumb Effect without transform to prevent losing mouse drag capture */
@@ -201,7 +189,6 @@
   background: transparent;
   border: none;
   color: inherit;
-  cursor: url('/cursor-hover-small.png'), pointer;
   padding: 6px;
   display: flex;
   align-items: center;
@@ -247,8 +234,13 @@
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 .track-modal {
@@ -271,6 +263,7 @@
     transform: scale(0.95);
     opacity: 0;
   }
+
   to {
     transform: scale(1);
     opacity: 1;
@@ -309,7 +302,6 @@
   padding: 10px 14px;
   background: transparent;
   border: 2px solid transparent;
-  cursor: url('/cursor-hover-small.png'), pointer;
   transition: all 0.15s ease;
   color: inherit;
   width: 100%;

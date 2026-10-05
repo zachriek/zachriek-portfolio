@@ -30,7 +30,6 @@ body {
     linear-gradient(rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0.35) 50%),
     linear-gradient(90deg, rgba(255, 0, 0, 0.02), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.02));
   background-size: 100% 4px, 3px 100%;
-  cursor: url('/cursor-small.png'), auto;
 }
 
 h1,
@@ -50,15 +49,6 @@ a {
   transition: color 0.2s;
 }
 
-a:hover {
-  color: var(--accent-color);
-  cursor: url('/cursor-hover-small.png'), pointer;
-}
-
-button:hover {
-  cursor: url('/cursor-hover-small.png'), pointer;
-}
-
 /* Pixel Art Utilities */
 .pixel-border {
   border: 2px solid var(--border-color);
@@ -69,7 +59,6 @@ button:hover {
 .pixel-border:hover {
   transform: translate(-2px, -2px);
   box-shadow: 6px 6px 0px rgba(0, 0, 0, 0.9);
-  cursor: url('/cursor-hover-small.png'), pointer;
 }
 
 .pixel-btn {

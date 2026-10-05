@@ -53,7 +53,6 @@ export const PixelButton = ({
     alignItems: 'center',
     justifyContent: 'center',
     gap: '8px',
-    cursor: disabled ? 'not-allowed' : 'url(/cursor-hover-small.png), pointer',
     opacity: disabled ? 0.6 : 1,
     border: variant === 'ghost' ? 'none' : '2px solid var(--border-color)',
     boxShadow: variant === 'ghost' ? 'none' : '3px 3px 0px rgba(0, 0, 0, 0.3)',
