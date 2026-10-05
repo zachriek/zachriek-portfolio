@@ -90,11 +90,11 @@ a {
   text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.8);
 }
 
-/* Pixel Icon Utility */
+/* Pixel / Lucide Icon Utility */
 .pixel-icon {
-  image-rendering: pixelated;
-  image-rendering: -moz-crisp-edges;
-  image-rendering: crisp-edges;
+  display: inline-block;
+  vertical-align: middle;
+  flex-shrink: 0;
 }
 
 /* Scrollbar styling */

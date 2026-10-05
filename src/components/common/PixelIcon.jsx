@@ -1,344 +1,233 @@
 import React from 'react';
+import {
+  Home,
+  Briefcase,
+  GraduationCap,
+  Trophy,
+  Calendar,
+  MapPin,
+  Music,
+  Play,
+  Pause,
+  Volume2,
+  VolumeX,
+  Volume1,
+  Minimize2,
+  Maximize2,
+  ListMusic,
+  X,
+  Sun,
+  Moon,
+  Zap,
+  Terminal,
+  ExternalLink,
+  Code,
+  Folder,
+  FileText,
+  User,
+  Sparkles,
+  Info,
+  Check,
+  Disc,
+  Radio,
+  ChevronRight,
+  CornerDownLeft,
+  Square
+} from 'lucide-react';
 
 /**
- * PixelIcon renders crisp, authentic 8-bit/pixel-art SVG icons
- * aligned strictly to a 24x24 pixel grid with shapeRendering="crispEdges".
+ * Custom SVG for GitHub matching Lucide's exact stroke, grid (24x24) and style.
+ * (Lucide removed brand icons in recent versions)
+ */
+const GithubIcon = ({
+  size = 20,
+  color = 'currentColor',
+  strokeWidth = 2,
+  className = '',
+  style = {},
+  ...props
+}) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={size}
+    height={size}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke={color}
+    strokeWidth={strokeWidth}
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className={`lucide lucide-github pixel-icon ${className}`}
+    style={{ display: 'inline-block', verticalAlign: 'middle', flexShrink: 0, ...style }}
+    aria-hidden="true"
+    {...props}
+  >
+    <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4" />
+    <path d="M9 18c-4.51 2-5-2-7-2" />
+  </svg>
+);
+
+/**
+ * Central dictionary mapping icon names / aliases to Lucide components.
+ */
+const ICON_MAP = {
+  home: Home,
+  briefcase: Briefcase,
+  work: Briefcase,
+  graduation: GraduationCap,
+  'graduation-cap': GraduationCap,
+  graduationcap: GraduationCap,
+  education: GraduationCap,
+  trophy: Trophy,
+  achievement: Trophy,
+  calendar: Calendar,
+  'map-pin': MapPin,
+  mappin: MapPin,
+  location: MapPin,
+  music: Music,
+  play: Play,
+  pause: Pause,
+  volume: Volume2,
+  'volume-2': Volume2,
+  volume2: Volume2,
+  'volume-1': Volume1,
+  volume1: Volume1,
+  'volume-x': VolumeX,
+  volumex: VolumeX,
+  mute: VolumeX,
+  unmute: Volume2,
+  minimize: Minimize2,
+  'minimize-2': Minimize2,
+  minimize2: Minimize2,
+  maximize: Maximize2,
+  'maximize-2': Maximize2,
+  maximize2: Maximize2,
+  expand: Maximize2,
+  'list-music': ListMusic,
+  listmusic: ListMusic,
+  playlist: ListMusic,
+  close: X,
+  x: X,
+  sun: Sun,
+  moon: Moon,
+  zap: Zap,
+  flash: Zap,
+  terminal: Terminal,
+  'external-link': ExternalLink,
+  externallink: ExternalLink,
+  'chevron-right': ChevronRight,
+  chevronright: ChevronRight,
+  'corner-down-left': CornerDownLeft,
+  cornerdownleft: CornerDownLeft,
+  code: Code,
+  folder: Folder,
+  file: FileText,
+  'file-text': FileText,
+  filetext: FileText,
+  user: User,
+  sparkles: Sparkles,
+  info: Info,
+  check: Check,
+  disc: Disc,
+  radio: Radio
+};
+
+/**
+ * PixelIcon renders modern, crisp Lucide icons across the application.
+ * Fully backwards-compatible with existing icon name props and Lucide component references.
  */
 export const PixelIcon = ({
   name,
+  icon,
   size = 20,
   color = 'currentColor',
+  strokeWidth = 2,
   className = '',
   style = {},
   ...props
 }) => {
-  const iconStyle = {
-    display: 'inline-block',
-    verticalAlign: 'middle',
-    flexShrink: 0,
-    imageRendering: 'pixelated',
-    ...style
-  };
+  const iconTarget = name || icon;
 
-  const renderIconContent = () => {
-    switch (name) {
-      case 'home':
-        return (
-          <>
-            {/* Chimney */}
-            <rect x="16" y="4" width="3" height="5" />
-            {/* Roof stepped */}
-            <rect x="11" y="3" width="2" height="2" />
-            <rect x="9" y="5" width="6" height="2" />
-            <rect x="7" y="7" width="10" height="2" />
-            <rect x="5" y="9" width="14" height="2" />
-            <rect x="3" y="11" width="18" height="2" />
-            <rect x="1" y="13" width="22" height="2" />
-            {/* House body */}
-            <rect x="4" y="15" width="16" height="6" />
-            {/* Door cutout */}
-            <rect x="10" y="16" width="4" height="5" fill="var(--bg-color, #121212)" />
-          </>
-        );
+  // 1. Direct React component passed as name or icon
+  if (typeof iconTarget === 'function' || (typeof iconTarget === 'object' && iconTarget !== null)) {
+    const Component = iconTarget;
+    return (
+      <Component
+        size={size}
+        color={color}
+        strokeWidth={strokeWidth}
+        className={`pixel-icon ${className}`}
+        style={{ display: 'inline-block', verticalAlign: 'middle', flexShrink: 0, ...style }}
+        {...props}
+      />
+    );
+  }
 
-      case 'briefcase':
-        return (
-          <>
-            {/* Handle */}
-            <rect x="9" y="3" width="6" height="2" />
-            <rect x="9" y="5" width="2" height="2" />
-            <rect x="13" y="5" width="2" height="2" />
-            {/* Case Body */}
-            <rect x="3" y="7" width="18" height="14" />
-            {/* Horizontal line divider */}
-            <rect x="3" y="12" width="18" height="2" fill="var(--bg-color, #121212)" />
-            {/* Lock / Clasp */}
-            <rect x="10" y="11" width="4" height="4" />
-            <rect x="11" y="12" width="2" height="2" fill="var(--bg-color, #121212)" />
-          </>
-        );
+  // 2. String icon name resolution
+  const rawKey = String(iconTarget || '').trim().toLowerCase();
 
-      case 'graduation':
-      case 'graduation-cap':
-        return (
-          <>
-            {/* Mortarboard Diamond */}
-            <rect x="11" y="4" width="2" height="2" />
-            <rect x="8" y="6" width="8" height="2" />
-            <rect x="5" y="8" width="14" height="2" />
-            <rect x="2" y="10" width="20" height="2" />
-            <rect x="5" y="12" width="14" height="2" />
-            {/* Skull Cap Base */}
-            <rect x="7" y="14" width="10" height="4" />
-            {/* Tassel */}
-            <rect x="20" y="11" width="2" height="6" />
-            <rect x="19" y="17" width="3" height="3" />
-          </>
-        );
+  if (rawKey === 'github' || rawKey === 'git-hub') {
+    return (
+      <GithubIcon
+        size={size}
+        color={color}
+        strokeWidth={strokeWidth}
+        className={className}
+        style={style}
+        {...props}
+      />
+    );
+  }
 
-      case 'trophy':
-        return (
-          <>
-            {/* Cup Rim & Bowl */}
-            <rect x="6" y="3" width="12" height="2" />
-            <rect x="5" y="5" width="14" height="4" />
-            <rect x="7" y="9" width="10" height="3" />
-            <rect x="9" y="12" width="6" height="2" />
-            {/* Handles */}
-            <rect x="3" y="5" width="2" height="5" />
-            <rect x="19" y="5" width="2" height="5" />
-            <rect x="5" y="9" width="2" height="2" />
-            <rect x="17" y="9" width="2" height="2" />
-            {/* Stem */}
-            <rect x="11" y="14" width="2" height="3" />
-            {/* Pedestal */}
-            <rect x="9" y="17" width="6" height="2" />
-            <rect x="6" y="19" width="12" height="2" />
-          </>
-        );
-
-      case 'sun':
-        return (
-          <>
-            {/* Center Core */}
-            <rect x="8" y="8" width="8" height="8" />
-            {/* Top / Bottom Rays */}
-            <rect x="11" y="2" width="2" height="4" />
-            <rect x="11" y="18" width="2" height="4" />
-            {/* Left / Right Rays */}
-            <rect x="2" y="11" width="4" height="2" />
-            <rect x="18" y="11" width="4" height="2" />
-            {/* Diagonals */}
-            <rect x="5" y="5" width="2" height="2" />
-            <rect x="17" y="5" width="2" height="2" />
-            <rect x="5" y="17" width="2" height="2" />
-            <rect x="17" y="17" width="2" height="2" />
-          </>
-        );
-
-      case 'moon':
-        return (
-          <>
-            {/* Crescent Moon */}
-            <rect x="9" y="3" width="7" height="2" />
-            <rect x="7" y="5" width="4" height="2" />
-            <rect x="16" y="5" width="2" height="2" />
-            <rect x="5" y="7" width="4" height="2" />
-            <rect x="16" y="7" width="3" height="2" />
-            <rect x="5" y="9" width="4" height="6" />
-            <rect x="16" y="9" width="3" height="6" />
-            <rect x="5" y="15" width="4" height="2" />
-            <rect x="16" y="15" width="3" height="2" />
-            <rect x="7" y="17" width="4" height="2" />
-            <rect x="16" y="17" width="2" height="2" />
-            <rect x="9" y="19" width="7" height="2" />
-          </>
-        );
-
-      case 'play':
-        return (
-          <>
-            {/* Stepped Pixel Triangle */}
-            <rect x="7" y="4" width="2" height="16" />
-            <rect x="9" y="6" width="2" height="12" />
-            <rect x="11" y="8" width="2" height="8" />
-            <rect x="13" y="10" width="2" height="4" />
-            <rect x="15" y="11" width="2" height="2" />
-          </>
-        );
-
-      case 'pause':
-        return (
-          <>
-            {/* Two block bars */}
-            <rect x="6" y="4" width="4" height="16" />
-            <rect x="14" y="4" width="4" height="16" />
-          </>
-        );
-
-      case 'volume':
-        return (
-          <>
-            {/* Speaker box */}
-            <rect x="3" y="9" width="4" height="6" />
-            {/* Cone */}
-            <rect x="7" y="8" width="2" height="8" />
-            <rect x="9" y="6" width="2" height="12" />
-            <rect x="11" y="4" width="2" height="16" />
-            {/* Inner wave */}
-            <rect x="15" y="8" width="2" height="2" />
-            <rect x="15" y="14" width="2" height="2" />
-            <rect x="16" y="10" width="2" height="4" />
-            {/* Outer wave */}
-            <rect x="19" y="5" width="2" height="2" />
-            <rect x="19" y="17" width="2" height="2" />
-            <rect x="20" y="7" width="2" height="10" />
-          </>
-        );
-
-      case 'volume-x':
-        return (
-          <>
-            {/* Speaker box */}
-            <rect x="3" y="9" width="4" height="6" />
-            {/* Cone */}
-            <rect x="7" y="8" width="2" height="8" />
-            <rect x="9" y="6" width="2" height="12" />
-            <rect x="11" y="4" width="2" height="16" />
-            {/* Pixel X */}
-            <rect x="15" y="9" width="2" height="2" />
-            <rect x="19" y="9" width="2" height="2" />
-            <rect x="17" y="11" width="2" height="2" />
-            <rect x="15" y="13" width="2" height="2" />
-            <rect x="19" y="13" width="2" height="2" />
-          </>
-        );
-
-      case 'music':
-        return (
-          <>
-            {/* 8-bit double musical note */}
-            <rect x="8" y="4" width="10" height="3" />
-            <rect x="8" y="7" width="2" height="9" />
-            <rect x="16" y="7" width="2" height="7" />
-            <rect x="5" y="14" width="5" height="4" />
-            <rect x="13" y="12" width="5" height="4" />
-          </>
-        );
-
-      case 'minimize':
-        return (
-          <>
-            {/* Pixel dash/inward line */}
-            <rect x="5" y="11" width="14" height="3" />
-          </>
-        );
-
-      case 'maximize':
-      case 'expand':
-        return (
-          <>
-            {/* Expand box */}
-            <rect x="4" y="4" width="16" height="2" />
-            <rect x="4" y="18" width="16" height="2" />
-            <rect x="4" y="6" width="2" height="12" />
-            <rect x="18" y="6" width="2" height="12" />
-            <rect x="10" y="10" width="4" height="4" />
-          </>
-        );
-
-      case 'list-music':
-      case 'playlist':
-        return (
-          <>
-            {/* 3 horizontal bars */}
-            <rect x="3" y="6" width="11" height="2" />
-            <rect x="3" y="11" width="11" height="2" />
-            <rect x="3" y="16" width="8" height="2" />
-            {/* Note on right */}
-            <rect x="17" y="8" width="4" height="2" />
-            <rect x="19" y="10" width="2" height="6" />
-            <rect x="16" y="14" width="4" height="3" />
-          </>
-        );
-
-      case 'close':
-      case 'x':
-        return (
-          <>
-            {/* Pixel Cross */}
-            <rect x="5" y="5" width="3" height="3" />
-            <rect x="8" y="8" width="3" height="3" />
-            <rect x="11" y="11" width="2" height="2" />
-            <rect x="13" y="8" width="3" height="3" />
-            <rect x="16" y="5" width="3" height="3" />
-            <rect x="8" y="13" width="3" height="3" />
-            <rect x="5" y="16" width="3" height="3" />
-            <rect x="13" y="13" width="3" height="3" />
-            <rect x="16" y="16" width="3" height="3" />
-          </>
-        );
-
-      case 'github':
-        return (
-          <>
-            {/* Pixel Octocat silhouette */}
-            <rect x="8" y="2" width="8" height="2" />
-            <rect x="6" y="4" width="12" height="2" />
-            <rect x="4" y="6" width="16" height="6" />
-            <rect x="2" y="8" width="2" height="6" />
-            <rect x="20" y="8" width="2" height="6" />
-            {/* Ears */}
-            <rect x="4" y="2" width="3" height="4" />
-            <rect x="17" y="2" width="3" height="4" />
-            {/* Body */}
-            <rect x="5" y="12" width="14" height="6" />
-            {/* Feet / tentacles */}
-            <rect x="6" y="18" width="3" height="4" />
-            <rect x="10" y="18" width="4" height="3" />
-            <rect x="15" y="18" width="3" height="4" />
-          </>
-        );
-
-      case 'calendar':
-        return (
-          <>
-            {/* Rings */}
-            <rect x="6" y="3" width="2" height="3" />
-            <rect x="16" y="3" width="2" height="3" />
-            {/* Top Bar */}
-            <rect x="4" y="5" width="16" height="4" />
-            {/* Body */}
-            <rect x="4" y="9" width="16" height="12" fill="none" stroke="currentColor" strokeWidth="2" />
-            {/* Inner pixel dots */}
-            <rect x="7" y="12" width="2" height="2" />
-            <rect x="11" y="12" width="2" height="2" />
-            <rect x="15" y="12" width="2" height="2" />
-            <rect x="7" y="16" width="2" height="2" />
-            <rect x="11" y="16" width="2" height="2" />
-          </>
-        );
-
-      case 'map-pin':
-        return (
-          <>
-            {/* Pin head */}
-            <rect x="8" y="3" width="8" height="2" />
-            <rect x="6" y="5" width="12" height="6" />
-            <rect x="4" y="6" width="2" height="4" />
-            <rect x="18" y="6" width="2" height="4" />
-            {/* Hole */}
-            <rect x="10" y="7" width="4" height="3" fill="var(--bg-color, #121212)" />
-            {/* Point */}
-            <rect x="8" y="11" width="8" height="3" />
-            <rect x="10" y="14" width="4" height="4" />
-            <rect x="11" y="18" width="2" height="3" />
-          </>
-        );
-
-      default:
-        return (
-          <rect x="6" y="6" width="12" height="12" />
-        );
-    }
-  };
+  const LucideComponent = ICON_MAP[rawKey] || Square;
 
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 24 24"
-      width={size}
-      height={size}
-      fill={color}
-      shapeRendering="crispEdges"
+    <LucideComponent
+      size={size}
+      color={color}
+      strokeWidth={strokeWidth}
       className={`pixel-icon ${className}`}
-      style={iconStyle}
-      aria-hidden="true"
+      style={{ display: 'inline-block', verticalAlign: 'middle', flexShrink: 0, ...style }}
       {...props}
-    >
-      {renderIconContent()}
-    </svg>
+    />
   );
+};
+
+export {
+  PixelIcon as Icon,
+  PixelIcon as LucideIcon,
+  Home,
+  Briefcase,
+  GraduationCap,
+  Trophy,
+  Calendar,
+  MapPin,
+  Music,
+  Play,
+  Pause,
+  Volume2,
+  VolumeX,
+  Volume1,
+  Minimize2,
+  Maximize2,
+  ListMusic,
+  X,
+  Sun,
+  Moon,
+  Zap,
+  Terminal,
+  ExternalLink,
+  Code,
+  Folder,
+  FileText,
+  User,
+  Sparkles,
+  Info,
+  Check,
+  Disc,
+  Radio,
+  ChevronRight,
+  CornerDownLeft
 };
 
 export default PixelIcon;

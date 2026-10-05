@@ -259,7 +259,8 @@ export const LinuxTerminal = () => {
               {achievementsData.map((ach, idx) => (
                 <div key={idx} className="terminal-card">
                   <div className="terminal-card-title">
-                    ★ {ach.title}
+                    <PixelIcon name="trophy" size={13} color="var(--accent-color)" style={{ marginRight: '6px', verticalAlign: '-1px' }} />
+                    {ach.title}
                   </div>
                   <div className="terminal-muted">Penyelenggara: {ach.issuer}</div>
                 </div>
@@ -273,7 +274,8 @@ export const LinuxTerminal = () => {
         playAudio();
         outputElement = (
           <div className="terminal-output-block terminal-green">
-            [AUDIO] ▶️ Memutar soundtrack: "{currentTrack?.title || 'Track'}"
+            <PixelIcon name="play" size={14} style={{ marginRight: '6px', verticalAlign: '-1px' }} />
+            [AUDIO] Memutar soundtrack: "{currentTrack?.title || 'Track'}"
             <div className="terminal-muted">
               Volume: {Math.round(volume * 100)}% | Ketik /pause untuk jeda musik, atau /tracks untuk ganti lagu.
             </div>
@@ -285,7 +287,8 @@ export const LinuxTerminal = () => {
         pauseAudio();
         outputElement = (
           <div className="terminal-output-block terminal-accent">
-            [AUDIO] ⏸️ Soundtrack dijeda. Ketik /play untuk memutar kembali.
+            <PixelIcon name="pause" size={14} style={{ marginRight: '6px', verticalAlign: '-1px' }} />
+            [AUDIO] Soundtrack dijeda. Ketik /play untuk memutar kembali.
           </div>
         );
         break;
@@ -299,7 +302,10 @@ export const LinuxTerminal = () => {
           const barStr = '■'.repeat(barFilled) + '□'.repeat(barEmpty);
           outputElement = (
             <div className="terminal-output-block">
-              <p>[AUDIO] 🔊 Volume saat ini: <strong className="terminal-green">{currentPct}%</strong></p>
+              <p>
+                <PixelIcon name="volume-2" size={14} style={{ marginRight: '6px', verticalAlign: '-1px' }} />
+                [AUDIO] Volume saat ini: <strong className="terminal-green">{currentPct}%</strong>
+              </p>
               <p className="terminal-ascii-bar">[{barStr}]</p>
               <p className="terminal-muted">Untuk mengubah, ketik: /volume &lt;0-100&gt; (contoh: /volume 80)</p>
             </div>
@@ -320,7 +326,10 @@ export const LinuxTerminal = () => {
             const barStr = '■'.repeat(barFilled) + '□'.repeat(barEmpty);
             outputElement = (
               <div className="terminal-output-block terminal-green">
-                <p>[AUDIO] 🔊 Volume berhasil diatur ke: <strong>{num}%</strong></p>
+                <p>
+                  <PixelIcon name="volume-2" size={14} style={{ marginRight: '6px', verticalAlign: '-1px' }} />
+                  [AUDIO] Volume berhasil diatur ke: <strong>{num}%</strong>
+                </p>
                 <p className="terminal-ascii-bar">[{barStr}]</p>
               </div>
             );
@@ -352,7 +361,11 @@ export const LinuxTerminal = () => {
                     <span className="track-num">[{idx + 1}]</span>
                     <span className="track-title">{t.title}</span>
                     {t.image && <span className="track-gif-badge">GIF</span>}
-                    {isCurrent && <span className="track-now-playing">▶ ACTIVE</span>}
+                    {isCurrent && (
+                      <span className="track-now-playing">
+                        <PixelIcon name="play" size={10} style={{ marginRight: '3px', verticalAlign: '0px' }} /> ACTIVE
+                      </span>
+                    )}
                   </button>
                 );
               })}
@@ -377,7 +390,8 @@ export const LinuxTerminal = () => {
           const selected = tracks[targetIndex];
           outputElement = (
             <div className="terminal-output-block terminal-green">
-              [AUDIO] 🔀 Memutar lagu: "{selected.title}" {selected.image ? '(GIF Avatar Aktif)' : ''}
+              <PixelIcon name="music" size={14} style={{ marginRight: '6px', verticalAlign: '-1px' }} />
+              [AUDIO] Memutar lagu: "{selected.title}" {selected.image ? '(GIF Avatar Aktif)' : ''}
             </div>
           );
         }
@@ -418,7 +432,8 @@ export const LinuxTerminal = () => {
               <div className="terminal-card-title">PRESTASI</div>
               {achievementsData.map((ach, idx) => (
                 <div key={idx} style={{ marginBottom: '6px' }}>
-                  ★ {ach.title} ({ach.issuer})
+                  <PixelIcon name="trophy" size={13} color="var(--accent-color)" style={{ marginRight: '6px', verticalAlign: '-1px' }} />
+                  {ach.title} ({ach.issuer})
                 </div>
               ))}
             </div>
@@ -595,12 +610,14 @@ export const LinuxTerminal = () => {
           </div>
           <div className="terminal-audio-status">
             {isPlaying ? (
-              <span className="audio-playing-indicator" title={currentTrack?.title}>
-                🎵 {currentTrack?.title} [PLAYING]
+              <span className="audio-playing-indicator" title={currentTrack?.title} style={{ display: 'inline-flex', alignItems: 'center', gap: '5px' }}>
+                <PixelIcon name="music" size={13} />
+                <span>{currentTrack?.title} [PLAYING]</span>
               </span>
             ) : (
-              <span className="audio-paused-indicator">
-                🔇 PAUSED
+              <span className="audio-paused-indicator" style={{ display: 'inline-flex', alignItems: 'center', gap: '5px' }}>
+                <PixelIcon name="volume-x" size={13} />
+                <span>PAUSED</span>
               </span>
             )}
           </div>
@@ -670,10 +687,14 @@ export const LinuxTerminal = () => {
                     onClick={() => handleSelectCommand(cmd)}
                     onMouseEnter={() => setSelectedIndex(idx)}
                   >
-                    <span className="autocomplete-indicator">{idx === selectedIndex ? '▶' : ' '}</span>
+                    <span className="autocomplete-indicator">
+                      {idx === selectedIndex ? <PixelIcon name="chevron-right" size={12} /> : ' '}
+                    </span>
                     <span className="autocomplete-cmd-name">{cmd.label}</span>
                     <span className="autocomplete-cmd-desc">— {cmd.desc}</span>
-                    <span className="autocomplete-action-badge">↵ Pilih</span>
+                    <span className="autocomplete-action-badge">
+                      <PixelIcon name="corner-down-left" size={10} style={{ marginRight: '3px' }} /> Pilih
+                    </span>
                   </div>
                 ))}
               </div>
@@ -719,7 +740,9 @@ export const LinuxTerminal = () => {
             onClick={toggleSuggestions}
             title="Buka / tutup autocomplete daftar command"
           >
-            <span className="trigger-icon">⚡</span>
+            <span className="trigger-icon">
+              <PixelIcon name="zap" size={13} />
+            </span>
             <span className="trigger-text">Commands</span>
             <span className="trigger-badge">[Tab]</span>
           </button>
