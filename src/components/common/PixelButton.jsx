@@ -54,7 +54,7 @@ export const PixelButton = ({
     justifyContent: 'center',
     gap: '8px',
     opacity: disabled ? 0.6 : 1,
-    border: variant === 'ghost' ? 'none' : '2px solid var(--border-color)',
+    border: variant === 'ghost' ? 'none' : '1px solid var(--border-color)',
     boxShadow: variant === 'ghost' ? 'none' : '3px 3px 0px rgba(0, 0, 0, 0.3)',
     textDecoration: 'none',
     transition: 'transform 0.1s, box-shadow 0.1s, background-color 0.2s',

@@ -17,6 +17,7 @@ export const COMMAND_LIST = [
   { name: '/volume', label: '/volume [0-100]', desc: 'Atur / cek volume (contoh: /volume 80)' },
   { name: '/tracks', label: '/tracks', desc: 'Daftar 18 soundtrack & pilih lagu' },
   { name: '/all', label: '/all', desc: 'Tampilkan semua isi portofolio' },
+  { name: '/help', label: '/help', desc: 'Daftar bantuan & command yang tersedia' },
   { name: '/clear', label: '/clear', desc: 'Bersihkan layar terminal' },
 ];
 
@@ -35,6 +36,9 @@ export const LinuxTerminal = () => {
   } = useAudio();
 
   const [inputVal, setInputVal] = useState('');
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const [selectedIndex, setSelectedIndex] = useState(0);
+
   const [history, setHistory] = useState([
     {
       id: 'init-welcome',
@@ -45,7 +49,7 @@ export const LinuxTerminal = () => {
             [SYS-READY] Linux 6.8.0-zachrie-arch x86_64 loaded successfully.
           </p>
           <p className="terminal-muted">
-            Ketik perintah di baris input bawah atau klik tombol shortcut di atas.
+            Ketik <span className="terminal-highlight">/</span> atau tekan <span className="terminal-highlight">Tab</span> untuk autocomplete perintah, atau klik <span className="terminal-highlight">⚡ Commands</span> di bawah.
           </p>
         </div>
       )
@@ -58,8 +62,68 @@ export const LinuxTerminal = () => {
   const inputRef = useRef(null);
   const terminalBottomRef = useRef(null);
   const historyScrollRef = useRef(null);
+  const autocompleteListRef = useRef(null);
 
   const avatarSrc = currentAvatar || profileData.avatar;
+
+  // Filtered commands based on user input for autocomplete
+  const filteredCommands = React.useMemo(() => {
+    const raw = inputVal.trim().toLowerCase();
+    if (!raw || raw === '/') {
+      return COMMAND_LIST;
+    }
+    const clean = raw.startsWith('/') ? raw : '/' + raw;
+    return COMMAND_LIST.filter((cmd) => {
+      const name = cmd.name.toLowerCase();
+      const desc = cmd.desc.toLowerCase();
+      return (
+        name.startsWith(clean) ||
+        name.startsWith(raw) ||
+        name.includes(raw) ||
+        desc.includes(raw)
+      );
+    });
+  }, [inputVal]);
+
+  // Inline ghost hint command (shell autosuggestion style)
+  const ghostCommand = React.useMemo(() => {
+    if (!inputVal) return '';
+    const raw = inputVal.toLowerCase();
+    const clean = raw.startsWith('/') ? raw : '/' + raw;
+    const match = COMMAND_LIST.find((c) => c.name.toLowerCase().startsWith(clean));
+    if (match) {
+      if (raw.startsWith('/')) {
+        return match.name.slice(raw.length);
+      } else {
+        return match.name.slice(raw.length + 1);
+      }
+    }
+    return '';
+  }, [inputVal]);
+
+  // Scroll active autocomplete item into view when navigating with arrow keys
+  useEffect(() => {
+    if (autocompleteListRef.current && selectedIndex >= 0 && selectedIndex < filteredCommands.length) {
+      const activeEl = autocompleteListRef.current.children[selectedIndex];
+      if (activeEl) {
+        activeEl.scrollIntoView({ block: 'nearest' });
+      }
+    }
+  }, [selectedIndex, filteredCommands.length]);
+
+  // Close suggestions when clicking outside input row or popup
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (
+        !e.target.closest('.terminal-input-row') &&
+        !e.target.closest('.terminal-autocomplete-popup')
+      ) {
+        setShowSuggestions(false);
+      }
+    };
+    window.addEventListener('mousedown', handleClickOutside);
+    return () => window.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   // Auto-scroll history container when new output is added
   useEffect(() => {
@@ -372,7 +436,7 @@ export const LinuxTerminal = () => {
           <div className="terminal-output-block terminal-error">
             bash: {trimmed}: command not found.
             <div className="terminal-muted">
-              Ketik <span className="terminal-highlight">/help</span> atau klik tombol di atas untuk melihat command yang tersedia.
+              Ketik <span className="terminal-highlight">/help</span> atau klik tombol <span className="terminal-highlight">⚡ Commands</span> di bawah untuk melihat command yang tersedia.
             </div>
           </div>
         );
@@ -390,18 +454,111 @@ export const LinuxTerminal = () => {
     ]);
   };
 
+  const handleSelectCommand = (cmd) => {
+    if (cmd.name === '/volume' && (!inputVal || inputVal.trim() === '/volume' || inputVal.trim() === '/vol')) {
+      setInputVal('/volume ');
+      setShowSuggestions(false);
+      inputRef.current?.focus();
+      return;
+    }
+    executeCommand(cmd.name);
+    setInputVal('');
+    setShowSuggestions(false);
+    inputRef.current?.focus();
+  };
+
+  const handleInputChange = (e) => {
+    const val = e.target.value;
+    setInputVal(val);
+    setShowSuggestions(true);
+    setSelectedIndex(0);
+  };
+
+  const toggleSuggestions = (e) => {
+    e.stopPropagation();
+    setShowSuggestions((prev) => !prev);
+    inputRef.current?.focus();
+  };
+
   const handleKeyDown = (e) => {
+    // 1. Navigation when autocomplete suggestions popup is open
+    if (showSuggestions && filteredCommands.length > 0) {
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        setSelectedIndex((prev) => (prev + 1) % filteredCommands.length);
+        return;
+      }
+      if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        setSelectedIndex((prev) => (prev - 1 + filteredCommands.length) % filteredCommands.length);
+        return;
+      }
+      if (e.key === 'Tab') {
+        e.preventDefault();
+        const selected = filteredCommands[selectedIndex] || filteredCommands[0];
+        if (selected) {
+          if (selected.name === '/volume') {
+            setInputVal('/volume ');
+          } else {
+            setInputVal(selected.name);
+          }
+          setShowSuggestions(false);
+        }
+        return;
+      }
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        const selected = filteredCommands[selectedIndex];
+        if (selected) {
+          handleSelectCommand(selected);
+          return;
+        }
+      }
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        setShowSuggestions(false);
+        return;
+      }
+    }
+
+    // 2. Normal Tab autocomplete when popup is closed
+    if (e.key === 'Tab') {
+      e.preventDefault();
+      if (!inputVal) {
+        setShowSuggestions(true);
+        return;
+      }
+      const trimmed = inputVal.trim().toLowerCase();
+      const match = COMMAND_LIST.find(
+        (c) => c.name.startsWith(trimmed) || c.name.substring(1).startsWith(trimmed)
+      );
+      if (match) {
+        setInputVal(match.name);
+        setShowSuggestions(false);
+      } else {
+        setShowSuggestions(true);
+      }
+      return;
+    }
+
+    // 3. Normal Enter command execution
     if (e.key === 'Enter') {
       e.preventDefault();
+      setShowSuggestions(false);
       executeCommand(inputVal);
       setInputVal('');
-    } else if (e.key === 'ArrowUp') {
+      return;
+    }
+
+    // 4. Command history navigation
+    if (e.key === 'ArrowUp') {
       e.preventDefault();
       if (commandHistory.length === 0) return;
       const nextIndex =
         historyPointer === -1 ? commandHistory.length - 1 : Math.max(0, historyPointer - 1);
       setHistoryPointer(nextIndex);
       setInputVal(commandHistory[nextIndex] || '');
+      setShowSuggestions(false);
     } else if (e.key === 'ArrowDown') {
       e.preventDefault();
       if (historyPointer === -1) return;
@@ -413,15 +570,12 @@ export const LinuxTerminal = () => {
         setHistoryPointer(nextIndex);
         setInputVal(commandHistory[nextIndex] || '');
       }
-    } else if (e.key === 'Tab') {
-      e.preventDefault();
-      const trimmed = inputVal.trim().toLowerCase();
-      if (!trimmed) return;
-      const match = COMMAND_LIST.find(
-        (c) => c.name.startsWith(trimmed) || c.name.substring(1).startsWith(trimmed)
-      );
-      if (match) {
-        setInputVal(match.name);
+      setShowSuggestions(false);
+    } else if (e.key === 'ArrowRight' && ghostCommand) {
+      if (inputRef.current && inputRef.current.selectionStart === inputVal.length) {
+        e.preventDefault();
+        const full = inputVal.startsWith('/') ? inputVal + ghostCommand : '/' + inputVal + ghostCommand;
+        setInputVal(full);
       }
     }
   };
@@ -452,7 +606,7 @@ export const LinuxTerminal = () => {
           </div>
         </div>
 
-        {/* Persistent Top Section: Profile Image Header (Always in view!) */}
+        {/* Persistent Top Section: Profile Image Header (Clean & compact!) */}
         <div className="terminal-profile-header">
           <div className="terminal-avatar-container pixel-border">
             <img
@@ -476,38 +630,7 @@ export const LinuxTerminal = () => {
           </div>
         </div>
 
-        {/* Persistent Commands Panel (Always visible so visitor immediately knows available commands) */}
-        <div className="terminal-commands-panel">
-          <div className="commands-panel-title">
-            ★ COMMANDS TERSEDIA (Klik tombol atau ketik di baris perintah):
-          </div>
-
-          {/* Quick-action interactive chips */}
-          <div className="commands-chips-grid">
-            {COMMAND_LIST.map((cmd) => (
-              <button
-                key={cmd.name}
-                className="terminal-chip pixel-border"
-                onClick={() => executeCommand(cmd.name)}
-                title={cmd.desc}
-              >
-                <span className="chip-name">{cmd.label}</span>
-              </button>
-            ))}
-          </div>
-
-          {/* Clean Cheatsheet list */}
-          <div className="commands-cheatsheet">
-            {COMMAND_LIST.map((cmd) => (
-              <div key={cmd.name} className="cheatsheet-item">
-                <span className="cmd-tag">{cmd.label}</span>
-                <span className="cmd-desc">— {cmd.desc}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Scrollable Command Output History Area */}
+        {/* Scrollable Command Output History Area (Spacious & uncluttered!) */}
         <div className="terminal-history-container" ref={historyScrollRef}>
           {history.map((item) => (
             <div key={item.id} className="history-entry">
@@ -526,29 +649,80 @@ export const LinuxTerminal = () => {
           <div ref={terminalBottomRef} />
         </div>
 
-        {/* Interactive Input Prompt Line (Always visible at bottom of terminal window) */}
+        {/* Interactive Input Prompt Line with Floating Autocomplete */}
         <div className="terminal-input-row">
+          {/* Floating Autocomplete Suggestions Panel */}
+          {showSuggestions && filteredCommands.length > 0 && (
+            <div className="terminal-autocomplete-popup pixel-border">
+              <div className="autocomplete-header">
+                <span className="autocomplete-title">
+                  <span className="terminal-green">●</span> COMMANDS TERSEDIA ({filteredCommands.length})
+                </span>
+                <span className="autocomplete-hint">
+                  <span className="key-pill">↑↓</span> navigasi <span className="key-pill">Tab</span> isi <span className="key-pill">Enter</span> pilih <span className="key-pill">Esc</span> tutup
+                </span>
+              </div>
+              <div className="autocomplete-list" ref={autocompleteListRef}>
+                {filteredCommands.map((cmd, idx) => (
+                  <div
+                    key={cmd.name}
+                    className={`autocomplete-item ${idx === selectedIndex ? 'selected' : ''}`}
+                    onClick={() => handleSelectCommand(cmd)}
+                    onMouseEnter={() => setSelectedIndex(idx)}
+                  >
+                    <span className="autocomplete-indicator">{idx === selectedIndex ? '▶' : ' '}</span>
+                    <span className="autocomplete-cmd-name">{cmd.label}</span>
+                    <span className="autocomplete-cmd-desc">— {cmd.desc}</span>
+                    <span className="autocomplete-action-badge">↵ Pilih</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
           <span className="prompt-user">guest@zachrie</span>
           <span className="prompt-sep">:</span>
           <span className="prompt-path">~</span>
           <span className="prompt-symbol">$</span>
+
           <div className="input-field-wrapper">
             <input
               ref={inputRef}
               type="text"
               value={inputVal}
-              onChange={(e) => setInputVal(e.target.value)}
+              onChange={handleInputChange}
               onKeyDown={handleKeyDown}
+              onFocus={() => {
+                if (inputVal) setShowSuggestions(true);
+              }}
               className="terminal-input"
               autoFocus
               autoComplete="off"
               autoCorrect="off"
               autoCapitalize="off"
               spellCheck="false"
-              placeholder="Ketik perintah (contoh: /about-me, /experiences, /volume 80)..."
+              placeholder="Ketik '/' untuk autocomplete (atau tekan Tab)..."
             />
+            {ghostCommand && (
+              <div className="terminal-ghost-overlay" aria-hidden="true">
+                <span className="ghost-spacer">{inputVal}</span>
+                <span className="ghost-text">{ghostCommand}</span>
+                <span className="ghost-badge">[Tab ⇥]</span>
+              </div>
+            )}
             <span className="terminal-cursor" />
           </div>
+
+          <button
+            type="button"
+            className={`terminal-cmd-trigger-btn pixel-border ${showSuggestions ? 'active' : ''}`}
+            onClick={toggleSuggestions}
+            title="Buka / tutup autocomplete daftar command"
+          >
+            <span className="trigger-icon">⚡</span>
+            <span className="trigger-text">Commands</span>
+            <span className="trigger-badge">[Tab]</span>
+          </button>
         </div>
       </div>
     </div>

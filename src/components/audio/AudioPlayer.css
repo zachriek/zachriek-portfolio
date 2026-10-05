@@ -6,7 +6,7 @@
   background: var(--nav-bg);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 2px solid var(--border-color);
+  border: 1px solid var(--border-color);
   padding: 14px 16px;
   display: flex;
   flex-direction: column;
@@ -46,7 +46,7 @@
   width: 100%;
   background: var(--bg-card);
   color: inherit;
-  border: 2px solid var(--border-color);
+  border: 1px solid var(--border-color);
   padding: 8px 12px;
   font-size: 12px;
   text-align: left;
@@ -75,7 +75,7 @@
 .play-btn {
   background: var(--accent-color);
   color: #FAFAFA;
-  border: 2px solid var(--border-color);
+  border: 1px solid var(--border-color);
   width: 42px;
   height: 42px;
   display: flex;
@@ -251,7 +251,7 @@
   max-height: 80vh;
   display: flex;
   flex-direction: column;
-  border: 2px solid var(--border-color);
+  border: 1px solid var(--border-color);
   box-shadow: 6px 6px 0px rgba(0, 0, 0, 0.8);
   overflow: hidden;
   font-family: var(--font-pixel);
@@ -275,7 +275,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 2px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color);
   background: var(--nav-bg);
 }
 
@@ -301,7 +301,7 @@
   align-items: center;
   padding: 10px 14px;
   background: transparent;
-  border: 2px solid transparent;
+  border: 1px solid transparent;
   transition: all 0.15s ease;
   color: inherit;
   width: 100%;

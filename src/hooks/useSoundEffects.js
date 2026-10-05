@@ -4,12 +4,16 @@ import { useEffect } from 'react';
  * Hook to play retro Undertale squeak sound on hover of interactive elements
  * and select sound on any click.
  */
-export const useSoundEffects = (enabled = true) => {
+export const useSoundEffects = (enabled = true, options = {}) => {
+  const { squeakVolume = 0.15, selectVolume = 0.2 } = options;
+
   useEffect(() => {
     if (!enabled) return;
 
     const squeakSound = new Audio('/snd_squeak.mp3');
     const selectSound = new Audio('/snd_select.mp3');
+    squeakSound.volume = squeakVolume;
+    selectSound.volume = selectVolume;
 
     const playSqueak = () => {
       squeakSound.currentTime = 0;
@@ -57,7 +61,7 @@ export const useSoundEffects = (enabled = true) => {
       document.removeEventListener('mouseout', handleMouseOut);
       document.removeEventListener('click', handleClick);
     };
-  }, [enabled]);
+  }, [enabled, squeakVolume, selectVolume]);
 };
 
 export default useSoundEffects;
