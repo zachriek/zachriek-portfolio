@@ -1,0 +1,217 @@
+/* Linux Desktop Window Styling */
+
+.desktop-window-container {
+  display: flex;
+  flex-direction: column;
+  background-color: rgba(10, 10, 14, 0.96);
+  border: 1px solid #FFFFFF;
+  box-shadow: 6px 6px 0px rgba(0, 0, 0, 0.95), 0 0 24px rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  overflow: hidden;
+  user-select: auto;
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+  animation: windowPopIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes windowPopIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.96) translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.desktop-window-container:focus-within {
+  border-color: #FFFFFF;
+  box-shadow: 8px 8px 0px rgba(0, 0, 0, 0.98), 0 0 30px rgba(255, 255, 255, 0.2);
+}
+
+.desktop-window-container.is-maximized {
+  box-shadow: none;
+  border-left: none;
+  border-right: none;
+  border-bottom: 1px solid #333333;
+  animation: none;
+}
+
+/* Linux Window Titlebar */
+.window-titlebar {
+  height: 36px;
+  background: #000000;
+  border-bottom: 1px solid #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 12px;
+  cursor: grab;
+  user-select: none;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.window-titlebar:active {
+  cursor: grabbing;
+}
+
+.is-maximized .window-titlebar {
+  cursor: default;
+}
+
+/* Classic Linux Dots */
+.window-dots {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  z-index: 2;
+}
+
+.window-dot {
+  width: 13px;
+  height: 13px;
+  border-radius: 2px; /* Pixel-square slightly softened or sharp */
+  border: 1px solid #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+  background: transparent;
+  outline: none;
+  transition: transform 0.1s, opacity 0.15s;
+}
+
+.window-dot:hover {
+  transform: scale(1.15);
+}
+
+.dot-symbol {
+  font-size: 10px;
+  font-family: var(--font-mono);
+  font-weight: bold;
+  color: #000000;
+  opacity: 0;
+  transition: opacity 0.15s;
+  line-height: 1;
+}
+
+.window-dots:hover .dot-symbol {
+  opacity: 1;
+}
+
+.window-dot.dot-close {
+  background-color: #ff5f56;
+}
+
+.window-dot.dot-minimize {
+  background-color: #ffbd2e;
+}
+
+.window-dot.dot-maximize {
+  background-color: #27c93f;
+}
+
+/* Window Title Content */
+.window-title-content {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  pointer-events: none;
+}
+
+.window-title-icon {
+  color: #ffffff;
+  flex-shrink: 0;
+}
+
+.window-title-text {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #FFFFFF;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 50vw;
+}
+
+/* Right side tools */
+.window-titlebar-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  z-index: 2;
+}
+
+/* Window Body */
+.window-body {
+  flex: 1;
+  overflow: auto;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background-color: #040406;
+}
+
+/* Window Resizers */
+.window-resizer {
+  position: absolute;
+  z-index: 10;
+}
+
+.resizer-e {
+  top: 0;
+  right: -3px;
+  width: 8px;
+  height: 100%;
+  cursor: ew-resize;
+}
+
+.resizer-s {
+  bottom: -3px;
+  left: 0;
+  width: 100%;
+  height: 8px;
+  cursor: ns-resize;
+}
+
+.resizer-se {
+  bottom: 0;
+  right: 0;
+  width: 16px;
+  height: 16px;
+  cursor: nwse-resize;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  padding: 2px;
+}
+
+.resizer-lines {
+  display: block;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .desktop-window-container {
+    border-radius: 0;
+    box-shadow: none;
+    border-left: none;
+    border-right: none;
+  }
+
+  .window-title-text {
+    max-width: 60vw;
+    font-size: 0.76rem;
+  }
+}

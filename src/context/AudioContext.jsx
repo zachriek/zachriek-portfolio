@@ -13,6 +13,11 @@ export const AudioProvider = ({ children, autoPlay = false }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [analyserNode, setAnalyserNode] = useState(null);
 
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
+  const [isLoop, setIsLoop] = useState(true);
+  const [isShuffle, setIsShuffle] = useState(false);
+
   const audioRef = useRef(null);
   const audioContextRef = useRef(null);
   const sourceRef = useRef(null);
@@ -137,7 +142,8 @@ export const AudioProvider = ({ children, autoPlay = false }) => {
   };
 
   const selectTrack = (index) => {
-    setCurrentTrackIndex(index);
+    const safeIndex = (index + TRACKS.length) % TRACKS.length;
+    setCurrentTrackIndex(safeIndex);
     setIsModalOpen(false);
     setTimeout(() => {
       if (audioRef.current) {
@@ -145,6 +151,52 @@ export const AudioProvider = ({ children, autoPlay = false }) => {
         audioRef.current.play().catch(e => console.error("Select track play error:", e));
       }
     }, 50);
+  };
+
+  const nextTrack = () => {
+    if (isShuffle) {
+      const randomIndex = Math.floor(Math.random() * TRACKS.length);
+      selectTrack(randomIndex);
+    } else {
+      const nextIdx = (currentTrackIndex + 1) % TRACKS.length;
+      selectTrack(nextIdx);
+    }
+  };
+
+  const prevTrack = () => {
+    if (audioRef.current && audioRef.current.currentTime > 3) {
+      audioRef.current.currentTime = 0;
+      setCurrentTime(0);
+      return;
+    }
+    const prevIdx = (currentTrackIndex - 1 + TRACKS.length) % TRACKS.length;
+    selectTrack(prevIdx);
+  };
+
+  const seekAudio = (timeInSeconds) => {
+    if (!audioRef.current) return;
+    const clamped = Math.max(0, Math.min(duration || 0, timeInSeconds));
+    audioRef.current.currentTime = clamped;
+    setCurrentTime(clamped);
+  };
+
+  const toggleLoop = () => {
+    setIsLoop(prev => !prev);
+  };
+
+  const toggleShuffle = () => {
+    setIsShuffle(prev => !prev);
+  };
+
+  const handleEnded = () => {
+    if (isLoop) {
+      if (audioRef.current) {
+        audioRef.current.currentTime = 0;
+        audioRef.current.play().catch(e => console.error("Loop replay error:", e));
+      }
+    } else {
+      nextTrack();
+    }
   };
 
   const currentTrack = TRACKS[currentTrackIndex];
@@ -162,6 +214,10 @@ export const AudioProvider = ({ children, autoPlay = false }) => {
     isMinimized,
     isModalOpen,
     analyserNode,
+    currentTime,
+    duration,
+    isLoop,
+    isShuffle,
     setIsMinimized,
     setIsModalOpen,
     togglePlay,
@@ -170,7 +226,12 @@ export const AudioProvider = ({ children, autoPlay = false }) => {
     setVolumeDirect,
     toggleMute,
     handleVolumeChange,
-    selectTrack
+    selectTrack,
+    nextTrack,
+    prevTrack,
+    seekAudio,
+    toggleLoop,
+    toggleShuffle
   };
 
   return (
@@ -178,8 +239,11 @@ export const AudioProvider = ({ children, autoPlay = false }) => {
       <audio
         ref={audioRef}
         src={`/soundtracks/${TRACKS[currentTrackIndex].file}`}
-        loop
         crossOrigin="anonymous"
+        loop={isLoop}
+        onTimeUpdate={(e) => setCurrentTime(e.currentTarget.currentTime || 0)}
+        onLoadedMetadata={(e) => setDuration(e.currentTarget.duration || 0)}
+        onEnded={handleEnded}
         onPlay={() => {
           setIsPlaying(true);
           setupAudioContext();
@@ -207,6 +271,10 @@ export const useAudio = () => {
       isMinimized: true,
       isModalOpen: false,
       analyserNode: null,
+      currentTime: 0,
+      duration: 0,
+      isLoop: true,
+      isShuffle: false,
       setIsMinimized: () => {},
       setIsModalOpen: () => {},
       togglePlay: () => {},
@@ -215,7 +283,12 @@ export const useAudio = () => {
       setVolumeDirect: () => {},
       toggleMute: () => {},
       handleVolumeChange: () => {},
-      selectTrack: () => {}
+      selectTrack: () => {},
+      nextTrack: () => {},
+      prevTrack: () => {},
+      seekAudio: () => {},
+      toggleLoop: () => {},
+      toggleShuffle: () => {}
     };
   }
   return context;

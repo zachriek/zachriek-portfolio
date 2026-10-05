@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import BackgroundAnimation from './components/layout/BackgroundAnimation';
-import LinuxTerminal from './components/terminal/LinuxTerminal';
+import DesktopEnvironment from './components/desktop/DesktopEnvironment';
 import PixelIcon from './components/common/PixelIcon';
 import PixelButton from './components/common/PixelButton';
 import { AudioProvider } from './context/AudioContext';
@@ -68,10 +68,7 @@ function App() {
 
   return (
     <AudioProvider autoPlay={true}>
-      <div style={{ position: 'relative', minHeight: '100vh', width: '100%', overflowX: 'hidden' }}>
-        <BackgroundAnimation />
-        <LinuxTerminal />
-      </div>
+      <DesktopEnvironment />
     </AudioProvider>
   );
 }

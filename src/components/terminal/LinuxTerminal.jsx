@@ -12,6 +12,10 @@ export const COMMAND_LIST = [
   { name: '/experiences', label: '/experiences', desc: 'Riwayat pengalaman & magang' },
   { name: '/educations', label: '/educations', desc: 'Riwayat pendidikan formal' },
   { name: '/achievements', label: '/achievements', desc: 'Daftar sertifikasi & penghargaan' },
+  { name: '/files', label: '/files', desc: 'Buka File Manager direktori portofolio' },
+  { name: '/tools', label: '/tools', desc: 'Buka direktori tools penetration testing' },
+  { name: '/images', label: '/images', desc: 'Buka direktori berkas animasi GIF' },
+  { name: '/music', label: '/music', desc: 'Buka aplikasi Music Player berspektrum luas' },
   { name: '/play', label: '/play', desc: 'Putar / lanjutkan musik soundtrack' },
   { name: '/pause', label: '/pause', desc: 'Jeda pemutaran musik' },
   { name: '/volume', label: '/volume [0-100]', desc: 'Atur / cek volume (contoh: /volume 80)' },
@@ -21,7 +25,7 @@ export const COMMAND_LIST = [
   { name: '/clear', label: '/clear', desc: 'Bersihkan layar terminal' },
 ];
 
-export const LinuxTerminal = () => {
+export const LinuxTerminal = ({ isEmbedded = false, onOpenApp = null }) => {
   const {
     currentAvatar,
     currentTrack,
@@ -266,6 +270,60 @@ export const LinuxTerminal = () => {
                 </div>
               ))}
             </div>
+          </div>
+        );
+        break;
+
+      case '/files':
+      case '/file':
+      case '/folder':
+        if (onOpenApp) {
+          onOpenApp('files', { folder: '~' });
+        }
+        outputElement = (
+          <div className="terminal-output-block terminal-green">
+            <PixelIcon name="folder" size={14} style={{ marginRight: '6px', verticalAlign: '-1px' }} />
+            [SYS-DESKTOP] Membuka jendela File Manager (~)...
+          </div>
+        );
+        break;
+
+      case '/tools':
+      case '/pentest':
+        if (onOpenApp) {
+          onOpenApp('files', { folder: '~/tools' });
+        }
+        outputElement = (
+          <div className="terminal-output-block terminal-green">
+            <PixelIcon name="shield" size={14} style={{ marginRight: '6px', verticalAlign: '-1px' }} />
+            [SYS-DESKTOP] Membuka direktori tools penetration testing (Burp Suite, Nmap, Metasploit, dll)...
+          </div>
+        );
+        break;
+
+      case '/images':
+      case '/image':
+      case '/gifs':
+        if (onOpenApp) {
+          onOpenApp('files', { folder: '~/images' });
+        }
+        outputElement = (
+          <div className="terminal-output-block terminal-green">
+            <PixelIcon name="image" size={14} style={{ marginRight: '6px', verticalAlign: '-1px' }} />
+            [SYS-DESKTOP] Membuka direktori gambar animasi GIF (Undertale / Deltarune)...
+          </div>
+        );
+        break;
+
+      case '/music':
+      case '/player':
+        if (onOpenApp) {
+          onOpenApp('music');
+        }
+        outputElement = (
+          <div className="terminal-output-block terminal-green">
+            <PixelIcon name="music" size={14} style={{ marginRight: '6px', verticalAlign: '-1px' }} />
+            [SYS-DESKTOP] Membuka aplikasi Music Player dengan audio visualizer spektrum...
           </div>
         );
         break;
@@ -595,10 +653,10 @@ export const LinuxTerminal = () => {
     }
   };
 
-  return (
-    <div className="terminal-wrapper" onClick={handleTerminalClick}>
-      <div className="terminal-window pixel-border">
-        {/* Linux Terminal Header Bar */}
+  const terminalContent = (
+    <div className={`terminal-window pixel-border ${isEmbedded ? 'is-embedded' : ''}`}>
+      {/* Linux Terminal Header Bar (Shown only in standalone mode) */}
+      {!isEmbedded && (
         <div className="terminal-header">
           <div className="terminal-dots">
             <span className="dot red" />
@@ -622,6 +680,7 @@ export const LinuxTerminal = () => {
             )}
           </div>
         </div>
+      )}
 
         {/* Persistent Top Section: Profile Image Header (Clean & compact!) */}
         <div className="terminal-profile-header">
@@ -748,6 +807,19 @@ export const LinuxTerminal = () => {
           </button>
         </div>
       </div>
+  );
+
+  if (isEmbedded) {
+    return (
+      <div className="terminal-embedded-wrapper" onClick={handleTerminalClick}>
+        {terminalContent}
+      </div>
+    );
+  }
+
+  return (
+    <div className="terminal-wrapper" onClick={handleTerminalClick}>
+      {terminalContent}
     </div>
   );
 };
