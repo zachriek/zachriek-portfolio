@@ -16,6 +16,7 @@ export const TRACKS = [
   { title: "THE WORLD REVOLVING", file: "THE WORLD REVOLVING.mp3", image: "/images/THE WORLD REVOLVING.gif" },
   { title: "Attack of the Killer Queen", file: "Attack of the Killer Queen.mp3", image: "/images/Attack of the Killer Queen.gif" },
   { title: "BIG SHOT", file: "BIG SHOT.mp3", image: "/images/BIG SHOT.gif" },
+  { title: "It’s TV Time!", file: "It’s TV Time!.mp3", image: "/images/It’s TV Time!.gif" },
   { title: "Black Knife", file: "Black Knife.mp3", image: "/images/Black Knife.gif" }
 ];
 
@@ -32,4 +33,3 @@ export const getTrackImage = (track) => {
   }
   return track.image || null;
 };
-
